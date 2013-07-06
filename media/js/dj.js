@@ -7,6 +7,8 @@ $(document).ready(function() {
     'domain': "wizuma.com",                // from token.js
     'listener': 'callback_object'    // the global name of the object that will receive callbacks from the SWF
     };
+	
+	var localQueue = [];
   var params = {
     'allowScriptAccess': 'always'
   };
@@ -16,19 +18,19 @@ $(document).ready(function() {
       1, 1, '9.0.0', 'expressInstall.swf', flashvars, params, attributes);
 
 
+      $.getJSON('http://wizuma.com/index.php/dj_json/get_queue', function(data) {
+		  apiswf.rdio_clearQueue();
+			for(var row in results) {
+              localQueue.push(results[row].key);
+            }
+		});
+
+
   // set up the controls
   $('#play').click(function() {
-    str = "";
-    $.getJSON('http://wizuma.com/index.php/dj_json/get_queue', function(data) {
-          results = data;
-          for(var row in results) {
-            str += "<li>" + results[row].name; + "</li>";
-            apiswf.rdio_queue(results[row].key);
-            console.log(results[row].key);
-          }
-        });
-        $('#queue').text = str;
-        apiswf.rdio_sendState();
+	  if(localQueue.length > 0) {
+		  apiswf.rdio_play(localQueue.shift());
+	  }
   });
   $('#stop').click(function() { apiswf.rdio_stop(); });
   $('#pause').click(function() { apiswf.rdio_pause(); });
@@ -110,6 +112,9 @@ callback_object.positionChanged = function positionChanged(position) {
 callback_object.queueChanged = function queueChanged(newQueue) {
   // The queue has changed to newQueue.
   console.log(newQueue);
+  if(localQueue.length > 0) {
+	  apiswf.rdio_queue(localQueue.shift());
+  }
 }
 
 callback_object.shuffleChanged = function shuffleChanged(shuffle) {

@@ -75,7 +75,7 @@ class Voter extends CI_Model {
     public function last_request_time($voter_id)
     {
         //TODO use timestamp on request rather than actual user
-        $query = $this->db->select('last_active')->from('voters')->where('id', $voter_id)->get();
+        $query = $this->db->select('added')->from('requests')->where('id', $voter_id)->get();
         return strtotime($query->row()->last_active); 
     }
 
