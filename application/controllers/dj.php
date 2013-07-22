@@ -39,7 +39,6 @@ class Dj extends CI_Controller {
 
   public function test()
   {
-    
     $result = $this->rdio->call('getPlaybackToken', array('domain' => 'wizuma.com'));
     $data = array('playback' => TRUE, 'token' => $result->result);
     $this->load->view('test', $data);

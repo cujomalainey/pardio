@@ -1,35 +1,14 @@
-/*
-Copyright (c) 2011 Rdio Inc
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
- */
-
-// a global variable that will hold a reference to the api swf once it has loaded
 var apiswf = null;
 
 $(document).ready(function() {
   // on page load use SWFObject to load the API swf into div#apiswf
   var flashvars = {
-    'playbackToken': $("#token").val(), // from token.js
+    'playbackToken': $("#token").text, // from token.js
     'domain': "wizuma.com",                // from token.js
     'listener': 'callback_object'    // the global name of the object that will receive callbacks from the SWF
     };
+	
+  var localQueue = [];
   var params = {
     'allowScriptAccess': 'always'
   };
@@ -39,28 +18,29 @@ $(document).ready(function() {
       1, 1, '9.0.0', 'expressInstall.swf', flashvars, params, attributes);
 
 
+      $.getJSON('http://wizuma.com/index.php/dj_json/get_queue', function(data) {
+			for(var row in data) {
+				console.log(data[row].key);
+             	localQueue.push(data[row].key);
+				console.log(localQueue);
+            }
+		});
+
+
   // set up the controls
   $('#play').click(function() {
-    $.getJSON('http://wizuma.com/index.php/dj_json/get_queue', function(data) {
-      apiswf.rdio_play(data[0].key);
-    });    
-  });
-  $('#queue').click(function() {
-    $.getJSON('http://wizuma.com/index.php/dj_json/get_queue', function(data) {
-      for(var row in data) {
-        if (row != 0)
-        {
-          apiswf.rdio_queue(data[row].key);
-          console.log(data[row].key);
-        }
-      }
-    });
+	  if(localQueue.length > 0) {
+		  var songToPlay = localQueue.shift();
+		  console.log("Playing " + songToPlay);
+		  apiswf.rdio_play(songToPlay);
+	  }
   });
   $('#stop').click(function() { apiswf.rdio_stop(); });
   $('#pause').click(function() { apiswf.rdio_pause(); });
   $('#previous').click(function() { apiswf.rdio_previous(); });
   $('#next').click(function() { apiswf.rdio_next(); });
 });
+
 
 
 // the global callback object
@@ -89,7 +69,6 @@ callback_object.ready = function ready(user) {
   } else {
     $('#nobody').show();
   }
-
   console.log(user);
 }
 
@@ -98,12 +77,14 @@ callback_object.freeRemainingChanged = function freeRemainingChanged(remaining) 
 }
 
 callback_object.playStateChanged = function playStateChanged(playState) {
+	console.log("PlaystateChanged" + playState);
   // The playback state has changed.
   // The state can be: 0 - paused, 1 - playing, 2 - stopped, 3 - buffering or 4 - paused.
   $('#playState').text(playState);
 }
 
 callback_object.playingTrackChanged = function playingTrackChanged(playingTrack, sourcePosition) {
+	console.log("playingTrackChanged");
   // The currently playing track has changed.
   // Track metadata is provided as playingTrack and the position within the playing source as sourcePosition.
   if (playingTrack != null) {
@@ -136,6 +117,9 @@ callback_object.positionChanged = function positionChanged(position) {
 callback_object.queueChanged = function queueChanged(newQueue) {
   // The queue has changed to newQueue.
   console.log(newQueue);
+  if(localQueue.length > 0) {
+	  apiswf.rdio_queue(localQueue.shift());
+  }
 }
 
 callback_object.shuffleChanged = function shuffleChanged(shuffle) {
@@ -163,4 +147,3 @@ callback_object.updateFrequencyData = function updateFrequencyData(arrayAsString
     $(this).width(parseInt(parseFloat(arr[i])*500));
   })
 }
-
