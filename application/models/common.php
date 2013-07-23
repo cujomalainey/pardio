@@ -24,6 +24,11 @@ class Common extends CI_Model {
         $query = $this->db->where('site_id', $site_id)->where('played', '0')->from("requests")->select("requests.key, name, icon_url, artist, album, is_explicit")->order_by("order", "ASC")->join('songs', 'songs.key = requests.key', 'left')->get();
         return $query->result_array();
     }
+	
+	public function queue_changed($site_id,$hash)
+	{
+		return ($this->get_queue_hash($site_id) == $hash) ? FALSE : TRUE;
+	}
 
     public function update_queue_hash($site_id)
     {

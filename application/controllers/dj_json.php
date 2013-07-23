@@ -24,7 +24,17 @@ class Dj_json extends CI_Controller {
 	public function get_queue()
 	{
 		$this->load->model('common');
-		$this->send($this->common->get_queue($this->session->userdata('site_id')));
+		if(isset($_GET['hash'])) {
+			if($this->common->queue_changed($_GET['hash'])) {
+				$this->send($this->common->get_queue($this->session->userdata('site_id')));
+				return;
+			} else {
+				$this->send(array("queue" => array()));
+				return;
+			}
+		}
+
+		$this->send($this->common->get_queue($this->session->userdata('site_id')));		
 	}
 
 	public function mark_queued($tracks)
