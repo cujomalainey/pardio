@@ -100,16 +100,11 @@ class Voter_json extends CI_Controller {
 		
 	}
 
-	public function get_info()
-	{
-		$id = $this->session->userdata('site_id');
-		$this->send(array('total' => $this->voter->active_members($id), 'name' => $this->voter->get_name_by_id($id)));
-	}
-
 	public function get_queue()
 	{
 		$this->load->model('common');
-		$this->send($this->common->get_queue($this->session->userdata('site_id')));
+		$id = $this->session->userdata('site_id');
+		$this->send(array('total' => $this->voter->active_members($id), 'name' => $this->voter->get_name_by_id($id), 'queue' => $this->common->get_queue($id)));
 	}
 
 	public function get_queue_hash()
