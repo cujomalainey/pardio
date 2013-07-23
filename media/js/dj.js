@@ -1,4 +1,5 @@
 var apiswf = null;
+var hash = "";
 
 $(document).ready(function() {
   // on page load use SWFObject to load the API swf into div#apiswf
@@ -37,9 +38,38 @@ $(document).ready(function() {
   $('#pause').click(function() { apiswf.rdio_pause(); });
   $('#previous').click(function() { apiswf.rdio_previous(); });
   $('#next').click(function() { apiswf.rdio_next(); });
+  get_update();
 });
 
+function get_update() {
+$.getJSON('http://wizuma.com/index.php/voter_json/get_queue', function(data) {
+        i = false;
+        str = "";
+        results = data.queue;
+        for(var row in results) {
+                str += "<div class=\"portlet\"><div class=\"portlet-header\">" + results[row].name + "</div><div class=\"portlet-content\"><img src=\"" + results[row].icon_url + "\"/><p>By: " + results[row].artist + "</p><p>From: " + results[row].album + "</p></div></div>";
+        }
+        document.getElementById("songQueue").innerHTML = str;
+        build_portlets();
+});
+}
 
+
+function build_portlets() {
+ $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+      .find( ".portlet-header" )
+        .addClass( "ui-widget-header ui-corner-all" )
+        .prepend( "<span class='ui-icon ui-icon-minusthick'></span>")
+        .end()
+      .find( ".portlet-content" );
+ 
+    $( ".portlet-header .ui-icon" ).click(function() {
+      $( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
+      $( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
+    });
+    $( ".column" ).disableSelection();
+$('.portlet-content').toggle();
+}
 // the global callback object
 var callback_object = {};
 
@@ -68,28 +98,11 @@ callback_object.ready = function ready(user) {
   }
 
   console.log(user);
-}
-
-  $(function() {
-    $( ".column" ).sortable({
+  $( ".column" ).sortable({
       connectWith: ".column"
     });
- 
-    $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-      .find( ".portlet-header" )
-        .addClass( "ui-widget-header ui-corner-all" )
-        .prepend( "<span class='ui-icon ui-icon-minusthick'></span>")
-        .end()
-      .find( ".portlet-content" );
- 
-    $( ".portlet-header .ui-icon" ).click(function() {
-      $( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
-      $( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
-    });
- 
-    $( ".column" ).disableSelection();
-    $('.portlet-content').toggle();
-  });
+
+}
 
 callback_object.freeRemainingChanged = function freeRemainingChanged(remaining) {
   $('#remaining').text(remaining);

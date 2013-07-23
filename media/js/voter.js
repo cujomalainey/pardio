@@ -1,9 +1,5 @@
 var hash = "";
 $(function() {
-    $.getJSON('http://wizuma.com/index.php/voter_json/get_info', function(data) {
- 		document.getElementById("name").innerHTML = data.name;
- 		document.getElementById("total").innerHTML = "Number of voters: " + data.total;
-	});
     get_update();
     $("#request").keyup(function(event){
         if(event.keyCode == 13){
@@ -31,7 +27,7 @@ function get_update() {
     $.getJSON('http://wizuma.com/index.php/voter_json/get_queue', function(data) {
         i = false;
         str = "";
-        results = data;
+        results = data.queue;
         for(var row in results) {
             if (i == true) {
                 str += "<div data-role=\"collapsible\" data-theme=\"b\" data-content-theme=\"d\" data-inset=\"false\"><h3>" + results[row].name + "</h3><div class=\"ui-grid-a\"><div class=\"ui-block-a pic\"><img src=\"" + results[row].icon_url + "\"/></div><div class=\"ui-block-b main\"><p>By: " + results[row].artist + "</p><p>From: " + results[row].album + "</p><form><fieldset data-role=\"controlgroup\" data-type=\"horizontal\"><legend>Vote:</legend><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2a\" value=\"1\"><label for=\"radio-choice-h-2a\">Yes</label><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2b\" value=\"0\"><label for=\"radio-choice-h-2b\">No</label></fieldset></form></div></div></div>";
@@ -44,6 +40,9 @@ function get_update() {
         }
         document.getElementById("list").innerHTML = str;
         $("#list").trigger('create');
+        document.getElementById("name").innerHTML = data.name;
+        document.getElementById("total").innerHTML = "Number of voters: " + data.total;
+        hash = data.hash;
     });
 }
 
