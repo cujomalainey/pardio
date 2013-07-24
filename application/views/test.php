@@ -40,6 +40,8 @@ body {
 
 #songQueue {
 	z-index: 10;
+	width: 80%;
+	position: fixed;
 }
 
 #log {
@@ -61,10 +63,9 @@ body {
 	background-color: #840b2a;
 	width: 5%;
 	margin-left: 5%;
-	z-index: -20;
+	z-index: 2;
 	float: left;
-	height: 20px;
-	position:fixed;
+	position: relative;
 }
 
 .column { float: left; padding-bottom: 10px; }
