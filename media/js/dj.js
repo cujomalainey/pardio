@@ -4,8 +4,6 @@ controller.api = null;
 controller.hash = "";
 controller.callback = {};
 
-$(document).ready(controller.init());
-
 controller.run =  function run() {
   // primary loop
   // check hash
@@ -13,7 +11,34 @@ controller.run =  function run() {
   // run commands
 }
 
-var int=self.setInterval(controller.run(),500);
+controller.build_portlets = function build_portlets() {
+$( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+  .find( ".portlet-header" )
+  .addClass( "ui-widget-header ui-corner-all" )
+  .prepend( "<span class='ui-icon ui-icon-plusthick'></span>")
+  .end()
+  .find( ".portlet-content" );
+ 
+  $( ".portlet-header .ui-icon" ).click(function() {
+    $( this ).toggleClass( "ui-icon-plusthick" ).toggleClass( "ui-icon-minusthick" );
+    $( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
+  });
+  $( ".column" ).disableSelection();
+  $('.portlet-content').toggle();
+}
+
+controller.get_queue = function get_queue() {
+$.getJSON('http://wizuma.com/index.php/voter_json/get_queue', function(data) {
+        i = false;
+        str = "";
+        results = data.queue;
+        for(var row in results) {
+                str += "<div class=\"portlet\"><div class=\"portlet-header\">" + results[row].name + "</div><div class=\"portlet-content\"><img src=\"" + results[row].icon_url + "\"/><p>By: " + results[row].artist + "</p><p>From: " + results[row].album + "</p></div></div>";
+        }
+        document.getElementById("songQueue").innerHTML = str;
+        controller.build_portlets();
+  });
+}
 
 controller.init = function init() {
   // on page load use SWFObject to load the API swf into div#apiswf
@@ -34,7 +59,7 @@ controller.init = function init() {
 
   $('#play').click(function() {
     $.getJSON('http://wizuma.com/index.php/dj_json/get_queue', function(data) {
-      apiswf.rdio_play(data[0].key);
+      controller.api.rdio_play(data[0].key);
     });    
   });
   $('#queue').click(function() {
@@ -42,30 +67,17 @@ controller.init = function init() {
       for(var row in data) {
         if (row != 0)
         {
-          apiswf.rdio_queue(data[row].key);
+          controller.api.rdio_queue(data[row].key);
           console.log(data[row].key);
         }
       }
     });
   });
-  $('#stop').click(function() { apiswf.rdio_stop(); });
-  $('#pause').click(function() { apiswf.rdio_pause(); });
-  $('#previous').click(function() { apiswf.rdio_previous(); });
-  $('#next').click(function() { apiswf.rdio_next(); });
-  get_update();
-}
-
-controller.get_queue = function get_queue() {
-$.getJSON('http://wizuma.com/index.php/voter_json/get_queue', function(data) {
-        i = false;
-        str = "";
-        results = data.queue;
-        for(var row in results) {
-                str += "<div class=\"portlet\"><div class=\"portlet-header\">" + results[row].name + "</div><div class=\"portlet-content\"><img src=\"" + results[row].icon_url + "\"/><p>By: " + results[row].artist + "</p><p>From: " + results[row].album + "</p></div></div>";
-        }
-        document.getElementById("songQueue").innerHTML = str;
-        build_portlets();
-});
+  $('#stop').click(function() { controller.api.rdio_stop(); });
+  $('#pause').click(function() { controller.api.rdio_pause(); });
+  $('#previous').click(function() { controller.api.rdio_previous(); });
+  $('#next').click(function() { controller.api.rdio_next(); });
+  this.get_queue();
 }
 
 controller.callback.ready = function ready(user) {

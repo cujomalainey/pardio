@@ -4,6 +4,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/swfobject/2.2/swfobject.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script src="/media/js/dj.js"></script>
+<script type="text/javascript">
+	$(document).ready(controller.init());
+	var int=self.setInterval(controller.run(),500);
+</script>
 <link rel="stylesheet" href="/media/css/jquery-ui.min.css" />
 <title><?php echo $site; ?></title>
 <style type="text/css">
