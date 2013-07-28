@@ -1,7 +1,21 @@
-var apiswf = null;
-var hash = "";
+var controller = {};
 
-$(document).ready(function() {
+controller.api = null;
+controller.hash = "";
+controller.callback = {};
+
+$(document).ready(controller.init());
+
+controller.run =  function run() {
+  // primary loop
+  // check hash
+  // check callback
+  // run commands
+}
+
+var int=self.setInterval(controller.run(),500);
+
+controller.init = function init() {
   // on page load use SWFObject to load the API swf into div#apiswf
   var flashvars = {
     'playbackToken': $("#token").val(), // from token.js
@@ -39,9 +53,9 @@ $(document).ready(function() {
   $('#previous').click(function() { apiswf.rdio_previous(); });
   $('#next').click(function() { apiswf.rdio_next(); });
   get_update();
-});
+}
 
-function get_update() {
+controller.get_queue = function get_queue() {
 $.getJSON('http://wizuma.com/index.php/voter_json/get_queue', function(data) {
         i = false;
         str = "";
@@ -54,32 +68,13 @@ $.getJSON('http://wizuma.com/index.php/voter_json/get_queue', function(data) {
 });
 }
 
-
-function build_portlets() {
- $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-      .find( ".portlet-header" )
-        .addClass( "ui-widget-header ui-corner-all" )
-        .prepend( "<span class='ui-icon ui-icon-minusthick'></span>")
-        .end()
-      .find( ".portlet-content" );
- 
-    $( ".portlet-header .ui-icon" ).click(function() {
-      $( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
-      $( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
-    });
-    $( ".column" ).disableSelection();
-$('.portlet-content').toggle();
-}
-// the global callback object
-var callback_object = {};
-
-callback_object.ready = function ready(user) {
+controller.callback.ready = function ready(user) {
   // Called once the API SWF has loaded and is ready to accept method calls.
 
   // find the embed/object element
-  apiswf = $('#apiswf').get(0);
+  controller.api = $('#apiswf').get(0);
 
-  apiswf.rdio_startFrequencyAnalyzer({
+  controller.api.rdio_startFrequencyAnalyzer({
     frequencies: '10-band',
     period: 100
   });
@@ -104,17 +99,17 @@ callback_object.ready = function ready(user) {
 
 }
 
-callback_object.freeRemainingChanged = function freeRemainingChanged(remaining) {
+controller.callback.freeRemainingChanged = function freeRemainingChanged(remaining) {
   $('#remaining').text(remaining);
 }
 
-callback_object.playStateChanged = function playStateChanged(playState) {
+controller.callback.playStateChanged = function playStateChanged(playState) {
   // The playback state has changed.
   // The state can be: 0 - paused, 1 - playing, 2 - stopped, 3 - buffering or 4 - paused.
   $('#playState').text(playState);
 }
 
-callback_object.playingTrackChanged = function playingTrackChanged(playingTrack, sourcePosition) {
+controller.callback.playingTrackChanged = function playingTrackChanged(playingTrack, sourcePosition) {
   // The currently playing track has changed.
   // Track metadata is provided as playingTrack and the position within the playing source as sourcePosition.
   if (playingTrack != null) {
@@ -125,53 +120,52 @@ callback_object.playingTrackChanged = function playingTrackChanged(playingTrack,
   }
 }
 
-callback_object.playingSourceChanged = function playingSourceChanged(playingSource) {
+controller.callback.playingSourceChanged = function playingSourceChanged(playingSource) {
   // The currently playing source changed.
   // The source metadata, including a track listing is inside playingSource.
 }
 
-callback_object.volumeChanged = function volumeChanged(volume) {
+controller.callback.volumeChanged = function volumeChanged(volume) {
   // The volume changed to volume, a number between 0 and 1.
 }
 
-callback_object.muteChanged = function muteChanged(mute) {
+controller.callback.muteChanged = function muteChanged(mute) {
   // Mute was changed. mute will either be true (for muting enabled) or false (for muting disabled).
 }
 
-callback_object.positionChanged = function positionChanged(position) {
+controller.callback.positionChanged = function positionChanged(position) {
   //The position within the track changed to position seconds.
   // This happens both in response to a seek and during playback.
   $('#position').text(position);
 }
 
-callback_object.queueChanged = function queueChanged(newQueue) {
+controller.callback.queueChanged = function queueChanged(newQueue) {
   // The queue has changed to newQueue.
   console.log(newQueue);
 }
 
-callback_object.shuffleChanged = function shuffleChanged(shuffle) {
+controller.callback.shuffleChanged = function shuffleChanged(shuffle) {
   // The shuffle mode has changed.
   // shuffle is a boolean, true for shuffle, false for normal playback order.
 }
 
-callback_object.repeatChanged = function repeatChanged(repeatMode) {
+controller.callback.repeatChanged = function repeatChanged(repeatMode) {
   // The repeat mode change.
   // repeatMode will be one of: 0: no-repeat, 1: track-repeat or 2: whole-source-repeat.
 }
 
-callback_object.playingSomewhereElse = function playingSomewhereElse() {
+controller.callback.playingSomewhereElse = function playingSomewhereElse() {
   // An Rdio user can only play from one location at a time.
   // If playback begins somewhere else then playback will stop and this callback will be called.
 }
 
-callback_object.updateFrequencyData = function updateFrequencyData(arrayAsString) {
+controller.callback.updateFrequencyData = function updateFrequencyData(arrayAsString) {
   // Called with frequency information after apiswf.rdio_startFrequencyAnalyzer(options) is called.
   // arrayAsString is a list of comma separated floats.
 
   var arr = arrayAsString.split(',');
 
   $('.frequency').each(function(i) {
-    $(this).height(parseInt(parseFloat(arr[i])*500));
+    $(this).height(parseInt(parseFloat(arr[i])*700));
   })
 }
-
