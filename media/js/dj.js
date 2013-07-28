@@ -4,7 +4,7 @@ controller.api = null;
 controller.hash = "";
 controller.callback = {};
 
-controller.run =  function run() {
+controller.run = function run() {
   // primary loop
   // check hash
   // check callback
@@ -12,12 +12,12 @@ controller.run =  function run() {
 }
 
 controller.build_portlets = function build_portlets() {
-$( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-  .find( ".portlet-header" )
-  .addClass( "ui-widget-header ui-corner-all" )
-  .prepend( "<span class='ui-icon ui-icon-plusthick'></span>")
-  .end()
-  .find( ".portlet-content" );
+  $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+    .find( ".portlet-header" )
+    .addClass( "ui-widget-header ui-corner-all" )
+    .prepend( "<span class='ui-icon ui-icon-plusthick'></span>")
+    .end()
+    .find( ".portlet-content" );
  
   $( ".portlet-header .ui-icon" ).click(function() {
     $( this ).toggleClass( "ui-icon-plusthick" ).toggleClass( "ui-icon-minusthick" );
@@ -28,7 +28,7 @@ $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-cor
 }
 
 controller.get_queue = function get_queue() {
-$.getJSON('http://wizuma.com/index.php/voter_json/get_queue', function(data) {
+  $.getJSON('http://wizuma.com/index.php/voter_json/get_queue', function(data) {
         i = false;
         str = "";
         results = data.queue;
@@ -45,7 +45,7 @@ controller.init = function init() {
   var flashvars = {
     'playbackToken': $("#token").val(), // from token.js
     'domain': "wizuma.com",                // from token.js
-    'listener': 'callback_object'    // the global name of the object that will receive callbacks from the SWF
+    'listener': 'controller.callback'    // the global name of the object that will receive callbacks from the SWF
     };
   var params = {
     'allowScriptAccess': 'always'
