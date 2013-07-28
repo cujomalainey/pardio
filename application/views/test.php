@@ -41,7 +41,7 @@ body {
 #songQueue {
 	z-index: 10;
 	width: 80%;
-	position: fixed;
+	position: absolute;
 }
 
 #log {
