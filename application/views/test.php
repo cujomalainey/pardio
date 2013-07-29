@@ -5,11 +5,24 @@
 <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script src="/media/js/dj.js"></script>
 <script type="text/javascript">
-	$(document).ready(controller.init());
-	var int=self.setInterval(controller.run(),500);
+	$(function() {
+    $( "#dialog-confirm" ).dialog({
+      resizable: false,
+      height:140,
+      modal: true,
+      buttons: {
+        "Initialize": function() {
+          $( this ).dialog( "close" );
+        },
+        "Run without Rdio": function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+  });
 </script>
 <link rel="stylesheet" href="/media/css/jquery-ui.min.css" />
-<title><?php echo $site; ?></title>
+<title></title>
 <style type="text/css">
 
 body {
@@ -39,7 +52,7 @@ body {
 #main {
 	width: 80%;
 	float: left;
-	min-height: 90%;
+	min-height: 1px;
 }
 
 #songQueue {
@@ -84,6 +97,9 @@ body {
 
 </head>
 <body>
+<div id="dialog-confirm" title="Empty the recycle bin?">
+ 	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
 	<?php if ($playback)
 {
 	?>
@@ -114,7 +130,7 @@ body {
 	<div class="frequency"></div>
 </div>
 <div id="log">
-	Fusce sit amet felis nisi. Donec erat eros, rhoncus et tempus a, suscipit sit amet ante. Vestibulum tristique nec nibh vel aliquam. Phasellus interdum lectus nec mi varius hendrerit. Integer iaculis ante sit amet blandit condimentum. Donec semper risus et nisl posuere egestas. Curabitur feugiat lacus mi, et rutrum sem pharetra quis. In id scelerisque orci. Mauris et commodo orci, nec ullamcorper dolor. Aliquam sit amet vehicula augue, at accumsan nibh. Donec sapien odio, consequat in magna id, commodo imperdiet ante.
+	Fusce sit amet felis nisi. Donec erat eros, 
 </div>
 </body>
 </html>

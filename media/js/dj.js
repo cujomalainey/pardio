@@ -78,6 +78,7 @@ controller.init = function init() {
   $('#previous').click(function() { controller.api.rdio_previous(); });
   $('#next').click(function() { controller.api.rdio_next(); });
   this.get_queue();
+  var int=self.setInterval(controller.run(),500);
 }
 
 controller.callback.ready = function ready(user) {
