@@ -21,7 +21,7 @@
         }
       }
     });
-    $( "#progressbar" ).progressbar({value: 0});
+    $( "#progressbar" ).progressbar({value: false});
   });
 </script>
 <link rel="stylesheet" href="/media/css/jquery-ui.min.css" />
@@ -71,21 +71,11 @@ body {
 }
 
 .frequency {
-	background: 
-		radial-gradient(rgba(255,255,255,0) 0, rgba(255,255,255,.15) 30%, rgba(255,255,255,.3) 32%, rgba(255,255,255,0) 33%) 0 0,
-		radial-gradient(rgba(255,255,255,0) 0, rgba(255,255,255,.1) 11%, rgba(255,255,255,.3) 13%, rgba(255,255,255,0) 14%) 0 0,
-		radial-gradient(rgba(255,255,255,0) 0, rgba(255,255,255,.2) 17%, rgba(255,255,255,.43) 19%, rgba(255,255,255,0) 20%) 0 110px,
-		radial-gradient(rgba(255,255,255,0) 0, rgba(255,255,255,.2) 11%, rgba(255,255,255,.4) 13%, rgba(255,255,255,0) 14%) -130px -170px,
-		radial-gradient(rgba(255,255,255,0) 0, rgba(255,255,255,.2) 11%, rgba(255,255,255,.4) 13%, rgba(255,255,255,0) 14%) 130px 370px,
-		radial-gradient(rgba(255,255,255,0) 0, rgba(255,255,255,.1) 11%, rgba(255,255,255,.2) 13%, rgba(255,255,255,0) 14%) 0 0,
-		linear-gradient(45deg, #343702 0%, #184500 20%, #187546 30%, #006782 40%, #0b1284 50%, #760ea1 60%, #83096e 70%, #840b2a 80%, #b13e12 90%, #e27412 100%);
-	background-size: 470px 470px, 970px 970px, 410px 410px, 610px 610px, 530px 530px, 730px 730px, 100% 100%;
-	background-color: #840b2a;
-	width: 5%;
-	margin-left: 5%;
+	width: 12.5%;
 	z-index: 2;
 	float: left;
 	position: relative;
+	min-height: 1px;
 }
 
 .column { float: left; padding-bottom: 10px;}
@@ -100,7 +90,7 @@ body {
 
 </head>
 <body>
-<div id="dialog-confirm" title="Empty the recycle bin?">
+<div id="dialog-confirm" title="Initialize">
  	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>You need to initialize rdio if you want to use it.<br/><div id="progressbar"></div></p>
 </div>
 	<?php if ($playback)
@@ -121,16 +111,110 @@ body {
 <div id="main">
 	<div id="songQueue" class="column">
 	</div>
-	<div class="frequency"></div>
-	<div class="frequency"></div>
-	<div class="frequency"></div>
-	<div class="frequency"></div>
-	<div class="frequency"></div>
-	<div class="frequency"></div>
-	<div class="frequency"></div>
-	<div class="frequency"></div>
-	<div class="frequency"></div>
-	<div class="frequency"></div>
+	<div class="frequency" style="background-image: linear-gradient(left , rgb(0,0,0) 13%, rgb(200,32,32) 57%);
+background-image: -o-linear-gradient(left , rgb(0,0,0) 13%, rgb(200,32,32) 57%);
+background-image: -moz-linear-gradient(left , rgb(0,0,0) 13%, rgb(200,32,32) 57%);
+background-image: -webkit-linear-gradient(left , rgb(0,0,0) 13%, rgb(200,32,32) 57%);
+background-image: -ms-linear-gradient(left , rgb(0,0,0) 13%, rgb(200,32,32) 57%);
+
+background-image: -webkit-gradient(
+	linear,
+	left top,
+	right top,
+	color-stop(0.13, rgb(0,0,0)),
+	color-stop(0.57, rgb(200,32,32))
+);"></div>
+	<div class="frequency" style="background-image: linear-gradient(right , rgb(255,116,24) 13%, rgb(200,32,32) 57%);
+background-image: -o-linear-gradient(right , rgb(255,116,24) 13%, rgb(200,32,32) 57%);
+background-image: -moz-linear-gradient(right , rgb(255,116,24) 13%, rgb(200,32,32) 57%);
+background-image: -webkit-linear-gradient(right , rgb(255,116,24) 13%, rgb(200,32,32) 57%);
+background-image: -ms-linear-gradient(right , rgb(255,116,24) 13%, rgb(200,32,32) 57%);
+
+background-image: -webkit-gradient(
+	linear,
+	right top,
+	left top,
+	color-stop(0.13, rgb(255,116,24)),
+	color-stop(0.57, rgb(200,32,32))
+);"></div>
+	<div class="frequency" style="background-image: linear-gradient(left , rgb(255,116,24) 13%, rgb(232,232,16) 57%);
+background-image: -o-linear-gradient(left , rgb(255,116,24) 13%, rgb(232,232,16) 57%);
+background-image: -moz-linear-gradient(left , rgb(255,116,24) 13%, rgb(232,232,16) 57%);
+background-image: -webkit-linear-gradient(left , rgb(255,116,24) 13%, rgb(232,232,16) 57%);
+background-image: -ms-linear-gradient(left , rgb(255,116,24) 13%, rgb(232,232,16) 57%);
+
+background-image: -webkit-gradient(
+	linear,
+	left top,
+	right top,
+	color-stop(0.13, rgb(255,116,24)),
+	color-stop(0.57, rgb(232,232,16))
+);"></div>
+	<div class="frequency" style="background-image: linear-gradient(right , rgb(46,232,0) 13%, rgb(232,232,16) 57%);
+background-image: -o-linear-gradient(right , rgb(46,232,0) 13%, rgb(232,232,16) 57%);
+background-image: -moz-linear-gradient(right , rgb(46,232,0) 13%, rgb(232,232,16) 57%);
+background-image: -webkit-linear-gradient(right , rgb(46,232,0) 13%, rgb(232,232,16) 57%);
+background-image: -ms-linear-gradient(right , rgb(46,232,0) 13%, rgb(232,232,16) 57%);
+
+background-image: -webkit-gradient(
+	linear,
+	right top,
+	left top,
+	color-stop(0.13, rgb(46,232,0)),
+	color-stop(0.57, rgb(232,232,16))
+);"></div>
+	<div class="frequency" style="background-image: linear-gradient(left , rgb(46,232,0) 13%, rgb(16,230,219) 57%);
+background-image: -o-linear-gradient(left , rgb(46,232,0) 13%, rgb(16,230,219) 57%);
+background-image: -moz-linear-gradient(left , rgb(46,232,0) 13%, rgb(16,230,219) 57%);
+background-image: -webkit-linear-gradient(left , rgb(46,232,0) 13%, rgb(16,230,219) 57%);
+background-image: -ms-linear-gradient(left , rgb(46,232,0) 13%, rgb(16,230,219) 57%);
+
+background-image: -webkit-gradient(
+	linear,
+	left top,
+	right top,
+	color-stop(0.13, rgb(46,232,0)),
+	color-stop(0.57, rgb(16,230,219))
+);"></div>
+	<div class="frequency" style="background-image: linear-gradient(right , rgb(0,12,230) 13%, rgb(16,230,219) 57%);
+background-image: -o-linear-gradient(right , rgb(0,12,230) 13%, rgb(16,230,219) 57%);
+background-image: -moz-linear-gradient(right , rgb(0,12,230) 13%, rgb(16,230,219) 57%);
+background-image: -webkit-linear-gradient(right , rgb(0,12,230) 13%, rgb(16,230,219) 57%);
+background-image: -ms-linear-gradient(right , rgb(0,12,230) 13%, rgb(16,230,219) 57%);
+
+background-image: -webkit-gradient(
+	linear,
+	right top,
+	left top,
+	color-stop(0.13, rgb(0,12,230)),
+	color-stop(0.57, rgb(16,230,219))
+);"></div>
+	<div class="frequency" style="background-image: linear-gradient(left , rgb(0,12,230) 13%, rgb(144,16,230) 57%);
+background-image: -o-linear-gradient(left , rgb(0,12,230) 13%, rgb(144,16,230) 57%);
+background-image: -moz-linear-gradient(left , rgb(0,12,230) 13%, rgb(144,16,230) 57%);
+background-image: -webkit-linear-gradient(left , rgb(0,12,230) 13%, rgb(144,16,230) 57%);
+background-image: -ms-linear-gradient(left , rgb(0,12,230) 13%, rgb(144,16,230) 57%);
+
+background-image: -webkit-gradient(
+	linear,
+	left top,
+	right top,
+	color-stop(0.13, rgb(0,12,230)),
+	color-stop(0.57, rgb(144,16,230))
+);"></div>
+	<div class="frequency" style="background-image: linear-gradient(right , rgb(0,0,0) 13%, rgb(144,16,230) 57%);
+background-image: -o-linear-gradient(right , rgb(0,0,0) 13%, rgb(144,16,230) 57%);
+background-image: -moz-linear-gradient(right , rgb(0,0,0) 13%, rgb(144,16,230) 57%);
+background-image: -webkit-linear-gradient(right , rgb(0,0,0) 13%, rgb(144,16,230) 57%);
+background-image: -ms-linear-gradient(right , rgb(0,0,0) 13%, rgb(144,16,230) 57%);
+
+background-image: -webkit-gradient(
+	linear,
+	right top,
+	left top,
+	color-stop(0.13, rgb(0,0,0)),
+	color-stop(0.57, rgb(144,16,230))
+);"></div>
 </div>
 <div id="log">
 	Fusce sit amet felis nisi. Donec erat eros, 

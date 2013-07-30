@@ -82,8 +82,9 @@ controller.init = function init() {
   $( "#progressbar" ).progressbar({value: 60});
   var int=self.setInterval(controller.run(),500);
   $( "#progressbar" ).progressbar({value: 80});
-  //perform checks
+  //wait for user callback
   $( "#progressbar" ).progressbar({value: 100});
+  //run test (run rdio_test and wait for playstate callback)
 }
 
 controller.callback.ready = function ready(user) {
@@ -93,7 +94,7 @@ controller.callback.ready = function ready(user) {
   controller.api = $('#apiswf').get(0);
 
   controller.api.rdio_startFrequencyAnalyzer({
-    frequencies: '10-band',
+    frequencies: '8-band',
     period: 100
   });
 
