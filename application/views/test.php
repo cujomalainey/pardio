@@ -8,17 +8,20 @@
 	$(function() {
     $( "#dialog-confirm" ).dialog({
       resizable: false,
-      height:140,
+      height:240,
+      width:600,
       modal: true,
       buttons: {
         "Initialize": function() {
-          $( this ).dialog( "close" );
+        	controller.init();
+          	$( this ).dialog( "close" );
         },
         "Run without Rdio": function() {
-          $( this ).dialog( "close" );
+          	$( this ).dialog( "close" );
         }
       }
     });
+    $( "#progressbar" ).progressbar({value: 0});
   });
 </script>
 <link rel="stylesheet" href="/media/css/jquery-ui.min.css" />
@@ -85,7 +88,7 @@ body {
 	position: relative;
 }
 
-.column { float: left; padding-bottom: 10px; }
+.column { float: left; padding-bottom: 10px;}
 .portlet { margin: 1em 1em 1em 1em; }
 .portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
 .portlet-header .ui-icon { float: right; }
@@ -98,7 +101,7 @@ body {
 </head>
 <body>
 <div id="dialog-confirm" title="Empty the recycle bin?">
- 	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
+ 	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>You need to initialize rdio if you want to use it.<br/><div id="progressbar"></div></p>
 </div>
 	<?php if ($playback)
 {

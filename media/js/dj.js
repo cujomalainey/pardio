@@ -56,7 +56,7 @@ controller.init = function init() {
       1, 1, '9.0.0', 'expressInstall.swf', flashvars, params, attributes);
 
   //build sortable list here, setup callback for rebuild queue if list changed
-
+  $( "#progressbar" ).progressbar({value: 20});
   $('#play').click(function() {
     $.getJSON('http://wizuma.com/index.php/dj_json/get_queue', function(data) {
       controller.api.rdio_play(data[0].key);
@@ -77,8 +77,13 @@ controller.init = function init() {
   $('#pause').click(function() { controller.api.rdio_pause(); });
   $('#previous').click(function() { controller.api.rdio_previous(); });
   $('#next').click(function() { controller.api.rdio_next(); });
+  $( "#progressbar" ).progressbar({value: 40});
   this.get_queue();
+  $( "#progressbar" ).progressbar({value: 60});
   var int=self.setInterval(controller.run(),500);
+  $( "#progressbar" ).progressbar({value: 80});
+  //perform checks
+  $( "#progressbar" ).progressbar({value: 100});
 }
 
 controller.callback.ready = function ready(user) {
