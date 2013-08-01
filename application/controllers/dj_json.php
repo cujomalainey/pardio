@@ -21,19 +21,24 @@ class Dj_json extends CI_Controller {
         $this->load->model("dj");
 	}
 
-	public function get_queue()
+	public function get_queue($hash)
 	{
 		$this->load->model('common');
-		if(isset($_GET['hash'])) {
-			if($this->common->queue_changed($_GET['hash'])) {
-				$this->send($this->common->get_queue($this->session->userdata('site_id')));
-				return;
-			} else {
-				$this->send(array("queue" => array()));
-				return;
+		$i = 0;
+		while ($i < 150)
+		{
+			sleep(2);
+			//recalculate votes
+			if ($this->common->get_queue_hash($this->session->userdata('site_id')) != $hash)
+			{
+				if($this->common->queue_changed($hash)) {
+					$this->send($this->common->get_queue($this->session->userdata('site_id')));
+				} else {
+					$this->send(array("queue" => array()));
+				}
 			}
+			$i++;
 		}
-
 		$this->send($this->common->get_queue($this->session->userdata('site_id')));		
 	}
 
