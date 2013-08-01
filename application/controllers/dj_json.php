@@ -25,17 +25,14 @@ class Dj_json extends CI_Controller {
 	{
 		$this->load->model('common');
 		$i = 0;
+		$site_id = $this->session->userdata('site_id');
 		while ($i < 150)
 		{
 			sleep(2);
 			//recalculate votes
-			if ($this->common->get_queue_hash($this->session->userdata('site_id')) != $hash)
+			if ($this->common->get_queue_hash($site_id) != $hash)
 			{
-				if($this->common->queue_changed($hash)) {
-					$this->send($this->common->get_queue($this->session->userdata('site_id')));
-				} else {
-					$this->send(array("queue" => array()));
-				}
+				$this->send(array("queue" => $this->common->get_queue($site_id), "hash" => $this->common->get_queue_hash($site_id), "voters" => $this->common->get_voters($site_id)));
 			}
 			$i++;
 		}

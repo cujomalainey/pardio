@@ -65,6 +65,11 @@ class Common extends CI_Model {
         }
     }
 
+    public function get_voters($site_id)
+    {
+        //voter time calc goes here
+    }
+
     private function add_song_to_cache($key)
     {
         $this->load->model('rdio');
