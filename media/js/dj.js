@@ -4,6 +4,8 @@ controller.api = null;
 controller.hash = "";
 controller.callback = {};
 controller.dbQueue = "";
+controller.playState = "";
+controller.done = false;
 
 controller.run = function run() {
   // primary loop
@@ -11,6 +13,11 @@ controller.run = function run() {
   // check callback
   // run commands
 }
+
+controller.sleep = function sleep(delay) {
+        var start = new Date().getTime();
+        while (new Date().getTime() < start + delay);
+      }
 
 controller.build_portlets = function build_portlets() {
   $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
@@ -60,7 +67,16 @@ controller.init = function init() {
   //build sortable list here, setup callback for rebuild queue if list changed
   $( "#progressbar" ).progressbar({value: 20});
   $('#play').click(function() {
-      controller.api.rdio_play(controller.dbQueue[0].key);  
+      if (controller.playState == 0 || controller.playState == 4)
+      {
+        controller.api.rdio_play();
+        console.log("1");
+      }
+      else if (controller.playState == 2)
+      {
+        controller.api.rdio_play(controller.dbQueue[0].key);
+        console.log("2");
+      }
   });
   $('#queue').click(function() {
     $.getJSON('http://wizuma.com/index.php/dj_json/get_queue', function(data) {
@@ -82,9 +98,20 @@ controller.init = function init() {
   $( "#progressbar" ).progressbar({value: 60});
   var int=self.setInterval(controller.run(),500);
   $( "#progressbar" ).progressbar({value: 80});
-  //wait for user callback
-  $( "#progressbar" ).progressbar({value: 100});
+  setTimeout(controller.finalInit, 1000);
   //run test (run rdio_test and wait for playstate callback)
+}
+
+controller.finalInit = function finalInit()
+{
+  while (controller.done == false)
+  {
+    controller.sleep(2000);
+    console.log("looped");
+  }
+  controller.api.rdio_sendState();
+  $( "#progressbar" ).progressbar({value: 100});
+  $( "#dialog-confirm" ).dialog( "close" );
 }
 
 controller.callback.ready = function ready(user) {
@@ -97,7 +124,7 @@ controller.callback.ready = function ready(user) {
     frequencies: '8-band',
     period: 100
   });
-
+  controller.done = true;
   if (user == null) {
     $('#nobody').show();
   } else if (user.isSubscriber) {
@@ -125,7 +152,8 @@ controller.callback.freeRemainingChanged = function freeRemainingChanged(remaini
 controller.callback.playStateChanged = function playStateChanged(playState) {
   // The playback state has changed.
   // The state can be: 0 - paused, 1 - playing, 2 - stopped, 3 - buffering or 4 - paused.
-  $('#playState').text(playState);
+  controller.playState = playState;
+  console.log("Play state: " + playState);
 }
 
 controller.callback.playingTrackChanged = function playingTrackChanged(playingTrack, sourcePosition) {

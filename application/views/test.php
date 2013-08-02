@@ -14,7 +14,6 @@
       buttons: {
         "Initialize": function() {
         	controller.init();
-          	$( this ).dialog( "close" );
         },
         "Run without Rdio": function() {
           	$( this ).dialog( "close" );
