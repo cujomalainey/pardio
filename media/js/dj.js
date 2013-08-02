@@ -3,6 +3,7 @@ var controller = {};
 controller.api = null;
 controller.hash = "";
 controller.callback = {};
+controller.dbQueue = "";
 
 controller.run = function run() {
   // primary loop
@@ -28,12 +29,13 @@ controller.build_portlets = function build_portlets() {
 }
 
 controller.get_queue = function get_queue() {
-  $.getJSON('http://wizuma.com/index.php/voter_json/get_queue', function(data) {
+  $.getJSON('http://wizuma.com/index.php/voter_json/get_queue/' + controller.hash, function(data) {
         i = false;
         str = "";
-        results = data.queue;
-        for(var row in results) {
-                str += "<div class=\"portlet\"><div class=\"portlet-header\">" + results[row].name + "</div><div class=\"portlet-content\"><img src=\"" + results[row].icon_url + "\"/><p>By: " + results[row].artist + "</p><p>From: " + results[row].album + "</p></div></div>";
+        controller.dbQueue = data.queue;
+        controller.hash = data.hash;
+        for(var row in controller.dbQueue) {
+                str += "<div class=\"portlet\"><div class=\"portlet-header\">" + controller.dbQueue[row].name + "</div><div class=\"portlet-content\"><img src=\"" + controller.dbQueue[row].icon_url + "\"/><p>By: " + controller.dbQueue[row].artist + "</p><p>From: " + controller.dbQueue[row].album + "</p></div></div>";
         }
         document.getElementById("songQueue").innerHTML = str;
         controller.build_portlets();
@@ -58,9 +60,7 @@ controller.init = function init() {
   //build sortable list here, setup callback for rebuild queue if list changed
   $( "#progressbar" ).progressbar({value: 20});
   $('#play').click(function() {
-    $.getJSON('http://wizuma.com/index.php/dj_json/get_queue', function(data) {
-      controller.api.rdio_play(data[0].key);
-    });    
+      controller.api.rdio_play(controller.dbQueue[0].key);  
   });
   $('#queue').click(function() {
     $.getJSON('http://wizuma.com/index.php/dj_json/get_queue', function(data) {

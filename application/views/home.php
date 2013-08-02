@@ -19,6 +19,8 @@
     </script>
 </head>
 <body>
+	<h1>Sorry, Site under construction</h1>
+	<hr/>
 	<form name="login" action="">
 		Email: <input type="email" name="user"><br/>
 		Password: <input type="password" name="user"><br/>
