@@ -104,7 +104,7 @@ body {
 </div>
 <div id="menu">
 	<button id="play">Play</button>
-	<button id="queue">Queue</button>
+	<button id="stop">Stop</button>
 	<button id="next">Next</button>
 </div>
 <div id="main">

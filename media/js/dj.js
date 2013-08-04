@@ -8,12 +8,20 @@ controller.playState = "";
 controller.done = false;
 controller.initDone = false;
 controller.inAjax = false;
+controller.queueAdd = 1;
+controller.callbackWait = false;
 
 controller.run = function run() {
   // primary loop
   // check hash
   // check callback
   // run commands
+  if (controller.callbackWait == false && controller.initDone == true && controller.dbQueue != "" && controller.playState == 1) 
+  {
+    controller.callbackWait = true;
+    controller.api.rdio_queue(controller.dbQueue[controller.queueAdd].key);
+    controller.queueAdd += 1;
+  }
   if (controller.initDone == true && controller.inAjax == false)
   {
     controller.inAjax = true;
@@ -78,17 +86,6 @@ controller.init = function init() {
         controller.api.rdio_play(controller.dbQueue[0].key);
         console.log("2");
       }
-  });
-  $('#queue').click(function() {
-    $.getJSON('http://wizuma.com/index.php/dj_json/get_queue', function(data) {
-      for(var row in data) {
-        if (row != 0)
-        {
-          controller.api.rdio_queue(data[row].key);
-          console.log(data[row].key);
-        }
-      }
-    });
   });
   $('#stop').click(function() { controller.api.rdio_stop(); });
   $('#pause').click(function() { controller.api.rdio_pause(); });
@@ -176,6 +173,7 @@ controller.callback.positionChanged = function positionChanged(position) {
 
 controller.callback.queueChanged = function queueChanged(newQueue) {
   // The queue has changed to newQueue.
+  controller.callbackWait = false;
   console.log(newQueue);
 }
 
