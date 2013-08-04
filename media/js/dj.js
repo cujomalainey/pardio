@@ -1,7 +1,7 @@
 var controller = {};
 
 controller.api = null;
-controller.hash = "";
+controller.hash = "1";
 controller.callback = {};
 controller.dbQueue = "";
 controller.playState = "";
@@ -21,6 +21,12 @@ controller.run = function run() {
       controller.hash = data.hash;
       controller.dbQueue = data.queue;
       console.log("looped");
+      str = "";
+      for(var row in controller.dbQueue) {
+                str += "<div class=\"portlet\"><div class=\"portlet-header\">" + controller.dbQueue[row].name + "</div><div class=\"portlet-content\"><img src=\"" + controller.dbQueue[row].icon_url + "\"/><p>By: " + controller.dbQueue[row].artist + "</p><p>From: " + controller.dbQueue[row].album + "</p></div></div>";
+      }
+      document.getElementById("songQueue").innerHTML = str;
+      controller.build_portlets();
       controller.inAjax = false;
     });
   }
@@ -42,20 +48,6 @@ controller.build_portlets = function build_portlets() {
   });
   $( ".column" ).disableSelection();
   $('.portlet-content').toggle();
-}
-
-controller.get_queue = function get_queue() {
-  $.getJSON('http://wizuma.com/index.php/voter_json/get_queue/' + controller.hash, function(data) {
-        i = false;
-        str = "";
-        controller.dbQueue = data.queue;
-        controller.hash = data.hash;
-        for(var row in controller.dbQueue) {
-                str += "<div class=\"portlet\"><div class=\"portlet-header\">" + controller.dbQueue[row].name + "</div><div class=\"portlet-content\"><img src=\"" + controller.dbQueue[row].icon_url + "\"/><p>By: " + controller.dbQueue[row].artist + "</p><p>From: " + controller.dbQueue[row].album + "</p></div></div>";
-        }
-        document.getElementById("songQueue").innerHTML = str;
-        controller.build_portlets();
-  });
 }
 
 controller.init = function init() {
@@ -103,7 +95,6 @@ controller.init = function init() {
   $('#previous').click(function() { controller.api.rdio_previous(); });
   $('#next').click(function() { controller.api.rdio_next(); });
   $( "#progressbar" ).progressbar({value: 40});
-  this.get_queue();
   $( "#progressbar" ).progressbar({value: 60});
   $( "#progressbar" ).progressbar({value: 80});
 }
