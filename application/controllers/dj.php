@@ -27,12 +27,6 @@ class Dj extends CI_Controller {
 		}
 	}
 
-	public function update($site_id)
-	{
-		$this->load->model('common');
-		$this->common->update_queue_hash($site_id);
-	}
-
 	public function connect_rdio()
 	{
 		$this->output->set_header("Location: " . $this->rdio->begin_authentication("http://wizuma.com/index.php/dj/auth_complete"));
