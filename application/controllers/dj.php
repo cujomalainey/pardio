@@ -9,11 +9,11 @@ class Dj extends CI_Controller {
 	 */
 
 	function __construct()
-  {
-    parent::__construct();
-    $this->load->library('session');
-    $this->load->model('rdio');
-  }
+  	{
+    	parent::__construct();
+    	$this->load->library('session');
+    	$this->load->model('rdio');
+  	}
 
 	public function index()
 	{
@@ -27,6 +27,12 @@ class Dj extends CI_Controller {
 		}
 	}
 
+	public function update($site_id)
+	{
+		$this->load->model('common');
+		$this->common->update_queue_hash($site_id);
+	}
+
 	public function connect_rdio()
 	{
 		$this->output->set_header("Location: " . $this->rdio->begin_authentication("http://wizuma.com/index.php/dj/auth_complete"));
@@ -37,12 +43,12 @@ class Dj extends CI_Controller {
     $this->rdio->complete_authentication($this->input->get('oauth_verifier'));
 	}
 
-  public function test()
-  {
-    $result = $this->rdio->call('getPlaybackToken', array('domain' => 'wizuma.com'));
-    $data = array('playback' => TRUE, 'token' => $result->result);
-    $this->load->view('test', $data);
-  }
+  	public function test()
+  	{
+    	$result = $this->rdio->call('getPlaybackToken', array('domain' => 'wizuma.com'));
+    	$data = array('playback' => TRUE, 'token' => $result->result);
+    	$this->load->view('test', $data);
+  	}
 }
 
 /* End of file dj.php */

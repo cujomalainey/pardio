@@ -35,8 +35,7 @@ class Dj_json extends CI_Controller {
 				break;
 			}
 			$i++;
-		}
-		$this->send($this->common->get_queue($this->session->userdata('site_id')));		
+		}		
 	}
 
 	public function mark_queued($tracks)

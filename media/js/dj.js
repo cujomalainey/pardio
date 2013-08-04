@@ -6,18 +6,27 @@ controller.callback = {};
 controller.dbQueue = "";
 controller.playState = "";
 controller.done = false;
+controller.initDone = false;
+controller.inAjax = false;
 
 controller.run = function run() {
   // primary loop
   // check hash
   // check callback
   // run commands
+  if (controller.initDone == true && controller.inAjax == false)
+  {
+    controller.inAjax = true;
+    $.getJSON('http://wizuma.com/index.php/dj_json/get_queue/' + controller.hash, function(data) {
+      controller.hash = data.hash;
+      controller.dbQueue = data.queue;
+      console.log("looped");
+      controller.inAjax = false;
+    });
+  }
 }
 
-controller.sleep = function sleep(delay) {
-        var start = new Date().getTime();
-        while (new Date().getTime() < start + delay);
-      }
+var int=setInterval(function() {controller.run()},1000);
 
 controller.build_portlets = function build_portlets() {
   $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
@@ -96,22 +105,7 @@ controller.init = function init() {
   $( "#progressbar" ).progressbar({value: 40});
   this.get_queue();
   $( "#progressbar" ).progressbar({value: 60});
-  var int=self.setInterval(controller.run(),500);
   $( "#progressbar" ).progressbar({value: 80});
-  setTimeout(controller.finalInit, 1000);
-  //run test (run rdio_test and wait for playstate callback)
-}
-
-controller.finalInit = function finalInit()
-{
-  while (controller.done == false)
-  {
-    controller.sleep(2000);
-    console.log("looped");
-  }
-  controller.api.rdio_sendState();
-  $( "#progressbar" ).progressbar({value: 100});
-  $( "#dialog-confirm" ).dialog( "close" );
 }
 
 controller.callback.ready = function ready(user) {
@@ -124,7 +118,7 @@ controller.callback.ready = function ready(user) {
     frequencies: '8-band',
     period: 100
   });
-  controller.done = true;
+  
   if (user == null) {
     $('#nobody').show();
   } else if (user.isSubscriber) {
@@ -142,7 +136,10 @@ controller.callback.ready = function ready(user) {
   $( ".column" ).sortable({
       connectWith: ".column"
     });
-
+  $( "#progressbar" ).progressbar({value: 100});
+  controller.api.rdio_sendState();
+  controller.initDone = true;
+  $( "#dialog-confirm" ).dialog( "close" );
 }
 
 controller.callback.freeRemainingChanged = function freeRemainingChanged(remaining) {

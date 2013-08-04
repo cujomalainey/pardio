@@ -33,7 +33,11 @@ class Common extends CI_Model {
     public function update_queue_hash($site_id)
     {
     	$query = $this->db->where('site_id', $site_id)->where('played', '0')->from("requests")->select("key")->order_by("order", "ASC")->get();
-    	$hash = md5($query);
+    	$str = "";
+        foreach ($query->result_array() as $row) {
+            $str .= $row['key'];
+        }
+        $hash = md5($str);
     	$this->db->where('id', $site_id)->update('sites', array('queue_hash' => $hash));
     }
 
@@ -63,6 +67,7 @@ class Common extends CI_Model {
         {
             $this->db->insert('requests', array('site_id' => $site_id, 'voter_id' => $voter_id, 'key' => $key, 'order' => $query->row()->order + 1));
         }
+        $this->update_queue_hash($site_id);
     }
 
     public function get_voters($site_id)
