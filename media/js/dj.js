@@ -12,10 +12,6 @@ controller.queueAdd = 1;
 controller.callbackWait = false;
 
 controller.run = function run() {
-  // primary loop
-  // check hash
-  // check callback
-  // run commands
   if (controller.callbackWait == false && controller.initDone == true && controller.dbQueue != "" && controller.playState == 1) 
   {
     controller.callbackWait = true;
@@ -26,15 +22,18 @@ controller.run = function run() {
   {
     controller.inAjax = true;
     $.getJSON('http://wizuma.com/index.php/dj_json/get_queue/' + controller.hash, function(data) {
-      controller.hash = data.hash;
-      controller.dbQueue = data.queue;
-      console.log("looped");
-      str = "";
-      for(var row in controller.dbQueue) {
-                str += "<div class=\"portlet\"><div class=\"portlet-header\">" + controller.dbQueue[row].name + "</div><div class=\"portlet-content\"><img src=\"" + controller.dbQueue[row].icon_url + "\"/><p>By: " + controller.dbQueue[row].artist + "</p><p>From: " + controller.dbQueue[row].album + "</p></div></div>";
+      if (data.hash != controller.hash) 
+      {
+        controller.hash = data.hash;
+        controller.dbQueue = data.queue;
+        console.log("looped");
+        str = "";
+        for(var row in controller.dbQueue) {
+          str += "<div class=\"portlet\"><div class=\"portlet-header\">" + controller.dbQueue[row].name + "</div><div class=\"portlet-content\"><img src=\"" + controller.dbQueue[row].icon_url + "\"/><p>By: " + controller.dbQueue[row].artist + "</p><p>From: " + controller.dbQueue[row].album + "</p></div></div>";
+        }
+        document.getElementById("songQueue").innerHTML = str;
+        controller.build_portlets(); 
       }
-      document.getElementById("songQueue").innerHTML = str;
-      controller.build_portlets();
       controller.inAjax = false;
     });
   }
