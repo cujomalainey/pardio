@@ -3,7 +3,7 @@
 class Dj extends CI_Controller {
 
 	/**
-	 * Seconday Controller
+	 * Primary Controller
 	 * Controls DJ Functionality
 	 * 
 	 */
@@ -34,7 +34,7 @@ class Dj extends CI_Controller {
 
 	public function auth_complete()
 	{
-    $this->rdio->complete_authentication($this->input->get('oauth_verifier'));
+    	$this->rdio->complete_authentication($this->input->get('oauth_verifier'));
 	}
 
   	public function test()

@@ -10,17 +10,19 @@ class Dj extends CI_Model {
         $this->load->database();
     }
 
-    public function get_unqueued_tracks($site_id)
-    {
-    	$query = $this->db->select('key')->where('queued', 0)->where('site_id', $site_id)->get('requests');
-    	return $query->result_array();
-    }
-
     public function mark_queued($tracks, $site_id)
     {
 		foreach ($tracks as $key) 
 		{
 			$this->db->where("site_id", $site_id)->where('key', $key)->update('requests', array('queued' => 1));
 		}    	
+    }
+
+    public function delete_request($key, $site_id)
+    {
+        $this->db->where('key', $key)->where('site_id', $site_id)->where('played', 0)->update('requests', array('drop' => 1));
+        $this->load->model('common');
+        $this->common->update_queue_hash($site_id);
+        return $this->db->select('name')->where('key', $key)->get('songs')->row()->name;
     }
 }

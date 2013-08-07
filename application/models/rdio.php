@@ -57,7 +57,7 @@ class Rdio extends CI_Model {
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($curl, CURLOPT_POSTFIELDS, $postbody);
     curl_setopt($curl, CURLOPT_HTTPHEADER,
-      array('Content-type: application/x-www-form-urlencoded','Authorization: '.$auth));
+      array('Content-type: application/x-www-form-urlencoded','Authorization: ' . $auth));
     $body = curl_exec($curl);
     curl_close($curl);
     return $body;
@@ -88,8 +88,7 @@ class Rdio extends CI_Model {
   }
 }
 
-function __om_escape($s) 
-{
+function __om_escape($s) {
   return str_replace('%7E', '~', rawurlencode($s));
 };
 
@@ -107,7 +106,6 @@ function __om_escape($s)
  * @return An Authorization header
  *
  */
-
 function om($consumer, $url, $params, $token=NULL, $method='POST', $realm=NULL, $timestamp=NULL, $nonce=NULL) {
   # the method must be upper-case
   $method = strtoupper($method);

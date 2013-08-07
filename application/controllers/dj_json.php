@@ -43,6 +43,11 @@ class Dj_json extends CI_Controller {
 		$this->dj->mark_queued(explode("_", $tracks), $this->session->userdata('site_id'));
 	}
 
+	public function delete($track)
+	{
+		$this->send($this->dj->delete_request($track, $this->session->userdata('site_id')));
+	}
+
 	private function send($data)
 	{
 		$this->output->set_output(json_encode($data));

@@ -14,6 +14,7 @@ controller.callbackWait = false;
 controller.run = function run() {
   if (controller.callbackWait == false && controller.initDone == true && controller.dbQueue != "" && controller.playState == 1) 
   {
+    console.log(controller.dbQueue.length);
     controller.callbackWait = true;
     controller.api.rdio_queue(controller.dbQueue[controller.queueAdd].key);
     controller.queueAdd += 1;
