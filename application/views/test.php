@@ -100,8 +100,7 @@ body {
 <?php
 }
 ?>
-<div id="header">
-</div>
+<div id="header"><span id="track"></span><div id="progress"></div></div>
 <div id="menu">
 	<button id="play">Play</button>
 	<button id="stop">Stop</button>

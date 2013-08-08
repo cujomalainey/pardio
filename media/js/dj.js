@@ -144,17 +144,17 @@ controller.callback.playStateChanged = function playStateChanged(playState) {
 controller.callback.playingTrackChanged = function playingTrackChanged(playingTrack, sourcePosition) {
   // The currently playing track has changed.
   // Track metadata is provided as playingTrack and the position within the playing source as sourcePosition.
-  if (playingTrack != null) {
-    $('#track').text(playingTrack['name']);
-    $('#album').text(playingTrack['album']);
-    $('#artist').text(playingTrack['artist']);
-    $('#art').attr('src', playingTrack['icon']);
-  }
 }
 
 controller.callback.playingSourceChanged = function playingSourceChanged(playingSource) {
   // The currently playing source changed.
   // The source metadata, including a track listing is inside playingSource.
+  document.getElementById('track').innerHTML = playingSource.name + "<br/>" + playingSource.artist;
+  $( "#progress" ).slider({
+      min: 0,
+      max: playingSource.duration,
+      value: 0
+    });
 }
 
 controller.callback.volumeChanged = function volumeChanged(volume) {
@@ -168,7 +168,7 @@ controller.callback.muteChanged = function muteChanged(mute) {
 controller.callback.positionChanged = function positionChanged(position) {
   //The position within the track changed to position seconds.
   // This happens both in response to a seek and during playback.
-  $('#position').text(position);
+  $( "#progress" ).slider({ value: position});
 }
 
 controller.callback.queueChanged = function queueChanged(newQueue) {
