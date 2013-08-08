@@ -28,11 +28,6 @@ controller.run = function run() {
         controller.hash = data.hash;
         controller.dbQueue = data.queue;
         console.log("looped");
-        str = "";
-        for(var row in controller.dbQueue) {
-          str += "<div class=\"portlet\"><div class=\"portlet-header\">" + controller.dbQueue[row].name + "</div><div class=\"portlet-content\"><img src=\"" + controller.dbQueue[row].icon_url + "\"/><p>By: " + controller.dbQueue[row].artist + "</p><p>From: " + controller.dbQueue[row].album + "</p></div></div>";
-        }
-        document.getElementById("songQueue").innerHTML = str;
         controller.build_portlets(); 
       }
       controller.inAjax = false;
@@ -43,6 +38,11 @@ controller.run = function run() {
 var int=setInterval(function() {controller.run()},1000);
 
 controller.build_portlets = function build_portlets() {
+  str = "";
+        for(var row in controller.dbQueue) {
+          str += "<div class=\"portlet\"><div class=\"portlet-header\">" + controller.dbQueue[row].name + "</div><div class=\"portlet-content\"><img src=\"" + controller.dbQueue[row].icon_url + "\"/><p>By: " + controller.dbQueue[row].artist + "</p><p>From: " + controller.dbQueue[row].album + "</p></div></div>";
+        }
+        document.getElementById("songQueue").innerHTML = str;
   $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
     .find( ".portlet-header" )
     .addClass( "ui-widget-header ui-corner-all" )
@@ -173,6 +173,11 @@ controller.callback.positionChanged = function positionChanged(position) {
 
 controller.callback.queueChanged = function queueChanged(newQueue) {
   // The queue has changed to newQueue.
+  if (newQueue[0].key != controller.dbQueue[0].key)
+  {
+    controller.dbQueue.splice(0,1);
+    controller.build_portlets();
+  }
   controller.callbackWait = false;
   console.log(newQueue);
 }

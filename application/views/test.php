@@ -77,6 +77,12 @@ body {
 	min-height: 1px;
 }
 
+#progress {
+	width: 80%;
+	margin-right: auto;
+	margin-left: auto;
+}
+
 .column { float: left; padding-bottom: 10px;}
 .portlet { margin: 1em 1em 1em 1em; }
 .portlet-header { margin: 0.3em; padding-bottom: 4px; padding-left: 0.2em; }
