@@ -10,8 +10,14 @@ controller.initDone = false;
 controller.inAjax = false;
 controller.queueAdd = 1;
 controller.callbackWait = false;
+controller.rdioQueue = "";
 
 controller.run = function run() {
+  if (controller.initDone == true && controller.dbQueue != "" && controller.playState == 1 && controller.rdioQueue != "" && controller.rdioQueue[0].key != controller.dbQueue[0].key)
+  {
+    controller.dbQueue.splice(0,1);
+    controller.build_portlets();
+  }
   if (controller.callbackWait == false && controller.initDone == true && controller.dbQueue != "" && controller.playState == 1) 
   {
     console.log(controller.dbQueue.length);
@@ -173,11 +179,7 @@ controller.callback.positionChanged = function positionChanged(position) {
 
 controller.callback.queueChanged = function queueChanged(newQueue) {
   // The queue has changed to newQueue.
-  if (newQueue[0].key != controller.dbQueue[0].key)
-  {
-    controller.dbQueue.splice(0,1);
-    controller.build_portlets();
-  }
+  controller.rdioQueue = newQueue;
   controller.callbackWait = false;
   console.log(newQueue);
 }
