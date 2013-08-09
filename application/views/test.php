@@ -77,7 +77,7 @@ body {
 	min-height: 1px;
 }
 
-#progress {
+.eigth {
 	width: 80%;
 	margin-right: auto;
 	margin-left: auto;
@@ -106,7 +106,7 @@ body {
 <?php
 }
 ?>
-<div id="header"><span id="track"></span><div id="progress"></div></div>
+<div id="header"><span id="track"></span><div id="progress" class="eigth"></div></div>
 <div id="menu">
 	<button id="play">Play</button>
 	<button id="stop">Stop</button>

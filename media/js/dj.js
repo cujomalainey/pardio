@@ -11,6 +11,7 @@ controller.inAjax = false;
 controller.queueAdd = 1;
 controller.callbackWait = false;
 controller.rdioQueue = "";
+controller.nowPlaying = {};
 
 controller.run = function run() {
   if (controller.initDone == true && controller.dbQueue != "" && controller.playState == 1 && controller.rdioQueue != "" && controller.rdioQueue[0].key != controller.dbQueue[0].key)
@@ -161,6 +162,7 @@ controller.callback.playingSourceChanged = function playingSourceChanged(playing
       max: playingSource.duration,
       value: 0
     });
+  controller.nowPlaying = playingSource;
 }
 
 controller.callback.volumeChanged = function volumeChanged(volume) {
