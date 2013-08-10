@@ -38,6 +38,13 @@ class Dj_json extends CI_Controller {
 		}		
 	}
 
+	public function remove($key)
+	{
+		$this->load->model('dj');
+		$this->dj->remove($key, $this->session->userdata('site_id'));
+		$this->send('true');
+	}
+
 	public function mark_queued($tracks)
 	{
 		$this->dj->mark_queued(explode("_", $tracks), $this->session->userdata('site_id'));

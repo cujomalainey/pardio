@@ -103,6 +103,15 @@ controller.init = function init() {
   $( "#progressbar" ).progressbar({value: 80});
 }
 
+controller.remove = function remove(key) {
+  $.getJSON('http://wizuma.com/index.php/dj_json/remove/' + key, function(data) {
+    if (data == false)
+    {
+      alert('Song failed to remove');
+    }
+  });
+}
+
 controller.callback.ready = function ready(user) {
   // Called once the API SWF has loaded and is ready to accept method calls.
 

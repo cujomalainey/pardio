@@ -25,4 +25,9 @@ class Dj extends CI_Model {
         $this->common->update_queue_hash($site_id);
         return $this->db->select('name')->where('key', $key)->get('songs')->row()->name;
     }
+
+    public function remove($key, $site_id)
+    {
+        $this->db->where('site_id', $site_id)->where('key', $key)->where('played', 0)->update('requests', array('drop' => 1));
+    }
 }
