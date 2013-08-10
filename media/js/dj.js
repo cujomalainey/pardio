@@ -47,7 +47,7 @@ var int=setInterval(function() {controller.run()},1000);
 controller.build_portlets = function build_portlets() {
   str = "";
         for(var row in controller.dbQueue) {
-          str += "<div class=\"portlet\"><div class=\"portlet-header\">" + controller.dbQueue[row].name + "</div><div class=\"portlet-content\"><img src=\"" + controller.dbQueue[row].icon_url + "\"/><p>By: " + controller.dbQueue[row].artist + "</p><p>From: " + controller.dbQueue[row].album + "</p></div></div>";
+          str += "<div class=\"portlet\"><div class=\"portlet-header\">" + controller.dbQueue[row].name + "</div><div class=\"portlet-content\"><img src=\"" + controller.dbQueue[row].icon_url + "\"/><p>By: " + controller.dbQueue[row].artist + "</p><p>From: " + controller.dbQueue[row].album + "</p><button type=\"button\" onClick=\"javascript:controller.remove(\'" + controller.dbQueue[row].key + "\')\">Delete</button></div></div>";
         }
         document.getElementById("songQueue").innerHTML = str;
   $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )

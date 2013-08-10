@@ -40,8 +40,9 @@ class Dj_json extends CI_Controller {
 
 	public function remove($key)
 	{
-		$this->load->model('dj');
+		$this->load->model(array('dj', 'common'));
 		$this->dj->remove($key, $this->session->userdata('site_id'));
+		$this->common->update_queue_hash($this->session->userdata('site_id'));
 		$this->send('true');
 	}
 
