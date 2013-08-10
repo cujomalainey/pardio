@@ -1,4 +1,3 @@
-var hash = "";
 $(function() {
     get_update();
     $("#request").keyup(function(event){
@@ -22,9 +21,15 @@ $(function() {
 
 var int=self.setInterval(function(){get_update()},3000);
 
+var queue = {};
+queue.hash = "a";
+queue.inAjax = false
+
 function get_update() {
     //update so its a hash check and only update if hash is different
-    $.getJSON('http://wizuma.com/index.php/voter_json/get_queue', function(data) {
+    if (queue.inAjax == false)
+    {
+        $.getJSON('http://wizuma.com/index.php/voter_json/get_queue/' + queue.hash, function(data) {
         i = false;
         str = "";
         results = data.queue;
@@ -42,8 +47,10 @@ function get_update() {
         $("#list").trigger('create');
         document.getElementById("name").innerHTML = data.name;
         document.getElementById("total").innerHTML = "Number of voters: " + data.total;
-        hash = data.hash;
-    });
+        queue.hash = data.hash;
+        queue.inAjax = false;
+        });
+    }
 }
 
 function request(songKey)
