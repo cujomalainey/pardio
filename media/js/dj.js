@@ -174,6 +174,9 @@ controller.callback.playingSourceChanged = function playingSourceChanged(playing
         controller.api.rdio_seek(ui.value);
       }
     });
+  $.getJSON('http://wizuma.com/index.php/dj_json/played/' + playingSource.key, function(data) {
+    console.log("song marked as play: " + data);
+  });
   controller.nowPlaying = playingSource;
 }
 

@@ -40,14 +40,23 @@ class Dj_json extends CI_Controller {
 
 	public function remove($key)
 	{
-		$this->load->model(array('dj', 'common'));
+		$this->load->model('common');
 		$this->dj->remove($key, $this->session->userdata('site_id'));
 		$this->common->update_queue_hash($this->session->userdata('site_id'));
 		$this->send('true');
 	}
 
+	public function played($key)
+	{
+		$this->load->model('common');
+		$this->dj->played($key, $this->session->userdata('site_id'));
+		$this->common->update_queue_hash($this->session->userdata('site_id'));
+		$this->send(true);
+	}
+
 	public function mark_queued($tracks)
 	{
+		//to be changed to can play
 		$this->dj->mark_queued(explode("_", $tracks), $this->session->userdata('site_id'));
 	}
 

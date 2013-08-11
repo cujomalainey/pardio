@@ -11,7 +11,7 @@ class Common extends CI_Model {
     public function get_queue($site_id)
     {
         //rebuild using temp tables
-        $query = $this->db->where('site_id', $site_id)->where('played', '0')->where('drop', 0)->from("requests")->select("requests.key, name, icon_url, artist, album, is_explicit, queued")->order_by("order", "ASC")->join('songs', 'songs.key = requests.key', 'left')->get();
+        $query = $this->db->where('site_id', $site_id)->where('played', '0')->where('drop', 0)->from("requests")->select("requests.key, name, icon_url, artist, album, is_explicit")->order_by("order", "ASC")->join('songs', 'songs.key = requests.key', 'left')->get();
         $redo = false;
         foreach ($query->result() as $row)
         {
@@ -23,7 +23,7 @@ class Common extends CI_Model {
         }
         if ($redo == true)
         {
-            $query = $this->db->where('site_id', $site_id)->where('played', '0')->where('drop', 0)->from("requests")->select("requests.key, name, icon_url, artist, album, is_explicit, queued")->order_by("order", "ASC")->join('songs', 'songs.key = requests.key', 'left')->get();
+            $query = $this->db->where('site_id', $site_id)->where('played', '0')->where('drop', 0)->from("requests")->select("requests.key, name, icon_url, artist, album, is_explicit")->order_by("order", "ASC")->join('songs', 'songs.key = requests.key', 'left')->get();
         }
         return $query->result_array();
     }

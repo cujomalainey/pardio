@@ -106,4 +106,10 @@ class Voter extends CI_Model {
             $this->db->insert('votes', array('voter_id' => $voter_id, 'key' => $key, 'vote' => $dir));
         }
     }
+
+    public function now_playing($site_id)
+    {
+        $query = $this->db->where('site_id', $site_id)->where('played', 1)->where('drop', 0)->select("name, icon_url, artist, album, is_explicit")->order_by("order", "DESC")->join('songs', 'songs.key = requests.key', 'left')->get("requests", 1, 0);
+        return $query->result_array();
+    }
 }

@@ -30,4 +30,9 @@ class Dj extends CI_Model {
     {
         $this->db->where('site_id', $site_id)->where('key', $key)->where('played', 0)->update('requests', array('drop' => 1));
     }
+
+    public function played($key, $site_id)
+    {
+        $this->db->where('site_id', $site_id)->where('key', $key)->where('drop', 0)->update('requests', array('played' => 1));
+    }
 }
