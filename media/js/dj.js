@@ -169,7 +169,10 @@ controller.callback.playingSourceChanged = function playingSourceChanged(playing
   $( "#progress" ).slider({
       min: 0,
       max: playingSource.duration,
-      value: 0
+      value: 0,
+      slide: function( event, ui ) {
+        controller.api.rdio_seek(ui.value);
+      }
     });
   controller.nowPlaying = playingSource;
 }
