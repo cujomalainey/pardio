@@ -74,9 +74,16 @@ class Voter extends CI_Model {
 
     public function last_request_time($voter_id)
     {
-        //TODO use timestamp on request rather than actual user
-        $query = $this->db->select('added')->from('requests')->where('id', $voter_id)->get();
-        return strtotime($query->row()->last_active); 
+        //TODO use timestamp on request rather than actual users activity timestamp
+        $query = $this->db->select('added')->where('voter_id', $voter_id)->order_by('added', 'DESC')->get('requests', 1, 0);
+        if ($query->num_rows() >= 1)
+        {
+            return strtotime($query->row()->added); 
+        }
+        else
+        {
+            return "-1";
+        }
     }
 
     public function already_requested($key, $site_id)
@@ -110,6 +117,26 @@ class Voter extends CI_Model {
     public function now_playing($site_id)
     {
         $query = $this->db->where('site_id', $site_id)->where('played', 1)->where('drop', 0)->select("name, icon_url, artist, album, is_explicit")->order_by("order", "DESC")->join('songs', 'songs.key = requests.key', 'left')->get("requests", 1, 0);
+        return $query->result_array();
+    }
+
+    public function get_queue()
+    {
+        $this->load->model('common');
+        $query = $this->db->where('site_id', $site_id)->where('played', '0')->where('drop', 0)->where('can_stream', 1)->from("requests")->select("requests.key, name, icon_url, artist, album, is_explicit")->order_by("order", "ASC")->join('songs', 'songs.key = requests.key', 'left')->get();
+        $redo = false;
+        foreach ($query->result() as $row)
+        {
+            if (is_null($row->name))
+            {
+                $redo = true;
+                $this->common->add_song_to_cache($row->key);
+            }
+        }
+        if ($redo == true)
+        {
+            $query = $this->db->where('site_id', $site_id)->where('played', '0')->where('drop', 0)->where('can_stream', 1)->from("requests")->select("requests.key, name, icon_url, artist, album, is_explicit")->order_by("order", "ASC")->join('songs', 'songs.key = requests.key', 'left')->get();
+        }
         return $query->result_array();
     }
 }

@@ -31,8 +31,10 @@ function get_update() {
     {
         $.getJSON('http://wizuma.com/index.php/voter_json/get_queue/' + queue.hash, function(data) {
         str = "";
-        console.log(data);
-        str += "<div data-role=\"collapsible\" data-theme=\"a\" data-content-theme=\"a\" data-inset=\"false\"><h3>Now Playing: " + data.nowPlaying[0].name + "</h3><div class=\"ui-grid-a\"><div class=\"ui-block-a pic\"><img src=\"" + data.nowPlaying[0].icon_url + "\"/></div><div class=\"ui-block-b main\"><p>By: " + data.nowPlaying[0].artist + "</p><p>From: " + data.nowPlaying[0].album + "</p></div></div></div>";
+        if (data.nowPlaying[0] != null)
+        {
+            str += "<div data-role=\"collapsible\" data-theme=\"a\" data-content-theme=\"a\" data-inset=\"false\"><h3>Now Playing: " + data.nowPlaying[0].name + "</h3><div class=\"ui-grid-a\"><div class=\"ui-block-a pic\"><img src=\"" + data.nowPlaying[0].icon_url + "\"/></div><div class=\"ui-block-b main\"><p>By: " + data.nowPlaying[0].artist + "</p><p>From: " + data.nowPlaying[0].album + "</p></div></div></div>";
+        }
         results = data.queue;
         for(var row in results) {
             str += "<div data-role=\"collapsible\" data-theme=\"b\" data-content-theme=\"d\" data-inset=\"false\"><h3>" + results[row].name + "</h3><div class=\"ui-grid-a\"><div class=\"ui-block-a pic\"><img src=\"" + results[row].icon_url + "\"/></div><div class=\"ui-block-b main\"><p>By: " + results[row].artist + "</p><p>From: " + results[row].album + "</p><form><fieldset data-role=\"controlgroup\" data-type=\"horizontal\"><legend>Vote:</legend><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2a\" value=\"1\"><label for=\"radio-choice-h-2a\">Yes</label><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2b\" value=\"0\"><label for=\"radio-choice-h-2b\">No</label></fieldset></form></div></div></div>";
@@ -50,9 +52,12 @@ function get_update() {
 function request(songKey)
 {
     url = "http://wizuma.com/index.php/voter_json/submit/" + songKey;
+    $.mobile.loading( 'show' );
     $.getJSON(url, function(data) {
         if (data == 0) {
-            alert("Your song has been queued");
+            $.mobile.loading( 'hide' );
+            get_update();
+            $('#search').dialog("close");
         }
         else
         {

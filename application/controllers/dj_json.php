@@ -54,10 +54,10 @@ class Dj_json extends CI_Controller {
 		$this->send(true);
 	}
 
-	public function mark_queued($tracks)
+	public function mark_stream($track, $streamable)
 	{
 		//to be changed to can play
-		$this->dj->mark_queued(explode("_", $tracks), $this->session->userdata('site_id'));
+		$this->dj->mark_stream($track, $streamable, $this->session->userdata('site_id'));
 	}
 
 	private function send($data)
