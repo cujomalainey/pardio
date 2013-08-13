@@ -55,14 +55,14 @@ function request(songKey)
     $.mobile.loading( 'show' );
     $.getJSON(url, function(data) {
         if (data == 0) {
-            $.mobile.loading( 'hide' );
             get_update();
-            $('#search').dialog("close");
         }
         else
         {
             alert(data[1]);
         }
+        $.mobile.loading( 'hide' );
+        $('#search').dialog("close");
     });
     $("#lnkHome").click();
 }
