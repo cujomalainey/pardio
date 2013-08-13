@@ -1,17 +1,18 @@
 var controller = {};
 
-controller.api = null;
-controller.hash = "1";
-controller.callback = {};
-controller.dbQueue = "";
-controller.playState = "";
-controller.done = false;
-controller.initDone = false;
-controller.inAjax = false;
-controller.queueAdd = 1;
-controller.callbackWait = false;
-controller.rdioQueue = "";
-controller.nowPlaying = {};
+controller.api = null;            //api object
+controller.hash = "1";            //queue hash
+controller.callback = {};         //callback object
+controller.dbQueue = "";          //mirror of PHP queue array
+controller.playState = "";        //integer of playstate
+controller.initDone = false;      //initialization switch
+controller.inAjax = false;        //ajax switch
+controller.queueAdd = 0;          //temp incremental key TO BE DELETED
+controller.callbackWait = false;  //waiting on callback object
+controller.rdioQueue = "";        //rdio array of queue
+controller.nowPlaying = {};       //now playing object
+controller.canStreamCheck = [];   //stream checking queue
+controller.checked = [];          //checked keys
 
 controller.run = function run() {
   if (controller.initDone == true && controller.dbQueue != "" && controller.playState == 1 && controller.rdioQueue != "" && controller.rdioQueue[0].key != controller.dbQueue[0].key)
@@ -19,11 +20,30 @@ controller.run = function run() {
     controller.dbQueue.splice(0,1);
     controller.build_portlets();
   }
+  if (controller.initDone == true && controller.dbQueue != "" && controller.canStreamCheck.length != 0)
+  {
+    for(var key in controller.canStreamCheck) {
+      for(var row in controller.rdioQueue) {
+        if (key.key == row.key)
+        {
+          console.log(row.canStream);
+          $.getJSON('http://wizuma.com/index.php/dj_json/mark_stream/' + row.key + "/" + row.canStream, function(data) {
+            controller.canStreamCheck.splice(controller.canStreamCheck.indexOf(key.key),1);
+            if (row.canStream == false)
+            {
+
+            }
+          });
+        }
+      }
+    }
+  }
   if (controller.callbackWait == false && controller.initDone == true && controller.dbQueue != "" && controller.playState == 1) 
   {
     console.log(controller.dbQueue.length);
     controller.callbackWait = true;
     controller.api.rdio_queue(controller.dbQueue[controller.queueAdd].key);
+    controller.canStreamCheck.push(controller.dbQueue[controller.queueAdd].key);
     controller.queueAdd += 1;
   }
   if (controller.initDone == true && controller.inAjax == false)

@@ -31,7 +31,7 @@ class Dj_json extends CI_Controller {
 			sleep(2);
 			if ($this->common->queue_changed($site_id, $hash))
 			{
-				$this->send(array("queue" => $this->common->get_queue($site_id), "hash" => $this->common->get_queue_hash($site_id), "voters" => $this->common->get_voters($site_id)));
+				$this->send(array("queue" => $this->dj->get_queue($site_id), "hash" => $this->common->get_queue_hash($site_id), "voters" => $this->common->get_voters($site_id)));
 				break;
 			}
 			$i++;

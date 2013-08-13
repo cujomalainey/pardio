@@ -120,7 +120,7 @@ class Voter extends CI_Model {
         return $query->result_array();
     }
 
-    public function get_queue()
+    public function get_queue($site_id)
     {
         $this->load->model('common');
         $query = $this->db->where('site_id', $site_id)->where('played', '0')->where('drop', 0)->where('can_stream', 1)->from("requests")->select("requests.key, name, icon_url, artist, album, is_explicit")->order_by("order", "ASC")->join('songs', 'songs.key = requests.key', 'left')->get();
