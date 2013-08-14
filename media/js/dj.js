@@ -24,26 +24,24 @@ controller.run = function run() {
   {
     for(var key in controller.canStreamCheck) {
       for(var row in controller.rdioQueue) {
-        if (key.key == row.key)
+        if (controller.canStreamCheck[key] == controller.rdioQueue[row].key)
         {
-          console.log(row.canStream);
-          $.getJSON('http://wizuma.com/index.php/dj_json/mark_stream/' + row.key + "/" + row.canStream, function(data) {
-            controller.canStreamCheck.splice(controller.canStreamCheck.indexOf(key.key),1);
+          canStream = (controller.rdioQueue[row].canStream) ? 1 : 0;
+          $.getJSON('http://wizuma.com/index.php/dj_json/mark_stream/' + controller.rdioQueue[row].key + "/" + canStream, function(data) {
+            controller.canStreamCheck.splice(controller.canStreamCheck.indexOf(controller.canStreamCheck[key].key),1);
             if (row.canStream == false)
             {
-
+              //remove from queue function goes here
             }
           });
         }
       }
     }
   }
-  if (controller.callbackWait == false && controller.initDone == true && controller.dbQueue != "" && controller.playState == 1) 
+  if (controller.callbackWait == false && controller.initDone == true && controller.dbQueue != "" && controller.playState == 1 && controller.queueAdd < controller.dbQueue.length) 
   {
-    console.log(controller.dbQueue.length);
     controller.callbackWait = true;
     controller.api.rdio_queue(controller.dbQueue[controller.queueAdd].key);
-    controller.canStreamCheck.push(controller.dbQueue[controller.queueAdd].key);
     controller.queueAdd += 1;
   }
   if (controller.initDone == true && controller.inAjax == false)
@@ -54,7 +52,12 @@ controller.run = function run() {
       {
         controller.hash = data.hash;
         controller.dbQueue = data.queue;
-        console.log("looped");
+        for(var key in data.queue) {
+          if (data.queue[key].can_stream == null)
+          {
+            controller.canStreamCheck.push(data.queue[key].key);
+          }
+        }
         controller.build_portlets(); 
       }
       controller.inAjax = false;
@@ -106,12 +109,10 @@ controller.init = function init() {
       if (controller.playState == 0 || controller.playState == 4)
       {
         controller.api.rdio_play();
-        console.log("1");
       }
       else if (controller.playState == 2)
       {
         controller.api.rdio_play(controller.dbQueue[0].key);
-        console.log("2");
       }
   });
   $('#stop').click(function() { controller.api.rdio_stop(); });

@@ -28,12 +28,12 @@ class Dj_json extends CI_Controller {
 		$site_id = $this->session->userdata('site_id');
 		while ($i < 150)
 		{
-			sleep(2);
 			if ($this->common->queue_changed($site_id, $hash))
 			{
 				$this->send(array("queue" => $this->dj->get_queue($site_id), "hash" => $this->common->get_queue_hash($site_id), "voters" => $this->common->get_voters($site_id)));
 				break;
 			}
+			sleep(2);
 			$i++;
 		}		
 	}
@@ -58,6 +58,9 @@ class Dj_json extends CI_Controller {
 	{
 		//to be changed to can play
 		$this->dj->mark_stream($track, $streamable, $this->session->userdata('site_id'));
+		$this->load->model('common');
+		$this->common->update_queue_hash($this->session->userdata('site_id'));
+		$this->send($streamable);
 	}
 
 	private function send($data)
