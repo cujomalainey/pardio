@@ -12,11 +12,11 @@ controller.callbackWait = false;  //waiting on callback object
 controller.rdioQueue = "";        //rdio array of queue
 controller.nowPlaying = {};       //now playing object
 controller.canStreamCheck = [];   //stream checking queue
-controller.checked = [];          //checked keys
 
 controller.run = function run() {
   if (controller.initDone == true && controller.dbQueue != "" && controller.playState == 1 && controller.rdioQueue != "" && controller.rdioQueue[0].key != controller.dbQueue[0].key)
   {
+    //TO DO: DEPRECATE THIS FUNCTION
     controller.dbQueue.splice(0,1);
     controller.build_portlets();
   }
