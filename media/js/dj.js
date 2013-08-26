@@ -12,20 +12,20 @@ controller.callbackWait = false;  //waiting on callback object
 controller.rdioQueue = "";        //rdio array of queue
 controller.nowPlaying = {};       //now playing object
 controller.canStreamCheck = [];   //stream checking queue
-controller.move = {to:"", from:""};
+controller.move = {to:"", key:""};
 
 controller.run = function run() {
   //secondary insert function, move to index
-  if (controller.move.to != "")
+  if (controller.move.to != "" && controller.callbackWait == false && controller.playState == 1)
   {
-
-  }
-  //temp portlet deleter, now invalid as PHP only acts on dbQueue, not JS
-  if (controller.initDone == true && controller.dbQueue != "" && controller.playState == 1 && controller.rdioQueue != "" && controller.rdioQueue[0].key != controller.dbQueue[0].key)
-  {
-    //TO DO: DEPRECATE THIS FUNCTION
-    controller.dbQueue.splice(0,1);
-    controller.build_portlets();
+    for (var row in controller.rdioQueue)
+    {
+      if (controller.move.key == controller.rdioQueue[row].key)
+      {
+        controller.api.rdio_moveQueuedSource(row, controller.to);
+        break;
+      }
+    }
   }
   //can_stream check function
   if (controller.initDone == true && controller.dbQueue != "" && controller.canStreamCheck.length != 0)
@@ -48,41 +48,56 @@ controller.run = function run() {
     }
   }
   //main queue checking function
-  if (controller.initDone == true && controller.dbQueue != "" && controller.callbackWait == false;)
+  if (controller.initDone == true && controller.dbQueue != "" && controller.callbackWait == false && controller.move.to == "")
   {
-    if (controller.canStreamCheck.length > controller.rdioQueue.length)
+    if (controller.dbQueue.length > controller.rdioQueue.length)
     {
+      i = 0;
       for(var row in controller.rdioQueue) 
       {
         if (controller.dbQueue[row].key != controller.rdioQueue[row].key)
         {
-          controller.callbackWait = true;
+          controller.insertQueue(row);
           break;
         }
+        i = row;
+      }
+      if (controller.callbackWait == false)
+      {
+        i++;
+        controller.api.rdio_queue(controller.dbQueue[i].key);
+        controller.callbackWait = true;
       }
     }
-    else 
+    else if (controller.dbQueue.length < controller.rdioQueue.length)
     {
-      for(var row in controller.canStreamCheck) 
+      i = 0;
+      for(var row in controller.dbQueue) 
       {
         if (controller.dbQueue[row].key != controller.rdioQueue[row].key)
         {
-          controller.callbackWait = true;
+          controller.insertQueue(row);
+          break;
+        }
+      }
+      if (controller.callbackWait == false)
+      {
+        i++;
+        controller.api.rdio_removeFromQueue(i);
+        controller.callbackWait = true;
+      }
+    }
+    else
+    {
+      for(var row in controller.dbQueue) 
+      {
+        if (controller.dbQueue[row].key != controller.rdioQueue[row].key)
+        {
+          controller.insertQueue(row);
           break;
         }
       }
     }
-    if (controller.callback == false)
-    {
-      //end of queue cleanup function
-    }
-  }
-  //to be deprecated, queue loading function
-  if (controller.callbackWait == false && controller.initDone == true && controller.dbQueue != "" && controller.playState == 1 && controller.queueAdd < controller.dbQueue.length) 
-  {
-    controller.callbackWait = true;
-    controller.api.rdio_queue(controller.dbQueue[controller.queueAdd].key);
-    controller.queueAdd += 1;
   }
   //queue request function, long polling
   if (controller.initDone == true && controller.inAjax == false)
@@ -93,6 +108,7 @@ controller.run = function run() {
       {
         controller.hash = data.hash;
         controller.dbQueue = data.queue;
+        controller.canStreamCheck = [];
         for(var key in data.queue) {
           if (data.queue[key].can_stream == null)
           {
@@ -107,6 +123,14 @@ controller.run = function run() {
 }
 
 var int=setInterval(function() {controller.run()},1000);
+
+controller.insertQueue = function insertQueue(location)
+{
+  controller.api.rdio_queue(controller.dbQueue[location].key);
+  controller.move.to = location;
+  controller.move.key = controller.dbQueue[location].key;
+  controller.callbackWait = true;
+} 
 
 controller.build_portlets = function build_portlets() {
   str = "";
