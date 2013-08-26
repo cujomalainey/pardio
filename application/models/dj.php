@@ -12,7 +12,12 @@ class Dj extends CI_Model {
 
     public function mark_stream($key, $streamable, $site_id)
     {
-		$this->db->where("site_id", $site_id)->where('key', $key)->update('requests', array('can_stream' => $streamable));    	
+		$this->db->where("site_id", $site_id)->where('key', $key)->update('requests', array('can_stream' => $streamable));
+        if ($streamable == 0)
+        {
+            $this->db->where("site_id", $site_id)->where('key', $key)->update('requests', array('drop' => 1));
+        }
+        //send message too    	
     }
 
     public function delete_request($key, $site_id)

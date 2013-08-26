@@ -13,6 +13,8 @@ controller.rdioQueue = "";        //rdio array of queue
 controller.nowPlaying = {};       //now playing object
 controller.canStreamCheck = [];   //stream checking queue
 controller.move = {to:"", key:""};
+controller.messing = false;
+controller.callbackCounter = 0;
 
 controller.run = function run() {
   //secondary insert function, move to index
@@ -22,7 +24,10 @@ controller.run = function run() {
     {
       if (controller.move.key == controller.rdioQueue[row].key)
       {
-        controller.api.rdio_moveQueuedSource(row, controller.to);
+        console.log(controller.move);
+        console.log(row + "->" + controller.move.to);
+        controller.api.rdio_moveQueuedSource(row, controller.move.to);
+        controller.move.to = "";
         break;
       }
     }
@@ -48,7 +53,7 @@ controller.run = function run() {
     }
   }
   //main queue checking function
-  if (controller.initDone == true && controller.dbQueue != "" && controller.callbackWait == false && controller.move.to == "")
+  if (controller.initDone == true && controller.dbQueue != "" && controller.callbackWait == false && controller.move.to == "" && controller.playState == 1 && controller.messing == false)
   {
     if (controller.dbQueue.length > controller.rdioQueue.length)
     {
@@ -120,9 +125,18 @@ controller.run = function run() {
       controller.inAjax = false;
     });
   }
+  //make sure callbacks always come through
+  if (controller.callbackWait == true)
+  {
+    controller.callbackCounter++;
+    if (controller.callbackCounter > 4)
+    {
+      controller.api.rdio_sendState();
+    }
+  }
 }
 
-var int=setInterval(function() {controller.run()},1000);
+var int=setInterval(function() {controller.run()},1500);
 
 controller.insertQueue = function insertQueue(location)
 {
@@ -285,6 +299,7 @@ controller.callback.queueChanged = function queueChanged(newQueue) {
   controller.rdioQueue = newQueue;
   controller.callbackWait = false;
   console.log(newQueue);
+  controller.callbackCounter = 0;
 }
 
 controller.callback.shuffleChanged = function shuffleChanged(shuffle) {
