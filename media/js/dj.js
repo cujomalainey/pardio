@@ -42,10 +42,9 @@ controller.run = function run() {
           canStream = (controller.rdioQueue[row].canStream) ? 1 : 0;
           $.getJSON('http://wizuma.com/index.php/dj_json/mark_stream/' + controller.rdioQueue[row].key + "/" + canStream, function(data) {
             controller.canStreamCheck.splice(controller.canStreamCheck.indexOf(controller.canStreamCheck[key].key),1);
-            if (row.canStream == false)
+            if (controller.rdioQueue[row].canStream == false)
             {
-              //remove from queue function goes here
-              //remove from check needed queue
+              controller.api.rdio_removeFromQueue(row);
             }
           });
         }
@@ -84,10 +83,11 @@ controller.run = function run() {
           controller.insertQueue(row);
           break;
         }
+        i++;
       }
       if (controller.callbackWait == false)
       {
-        i++;
+        console.log("deleting at:" + i);
         controller.api.rdio_removeFromQueue(i);
         controller.callbackWait = true;
       }
