@@ -15,10 +15,10 @@ class Common extends CI_Model {
 
     public function update_queue_hash($site_id)
     {
-    	$query = $this->db->where('site_id', $site_id)->where('played', '0')->where('drop', 0)->from("requests")->select("key")->order_by("order", "ASC")->get();
+    	$query = $this->db->where('site_id', $site_id)->where('played', '0')->where('drop', 0)->from("requests")->select("key, can_stream")->order_by("order", "ASC")->get();
     	$str = "";
         foreach ($query->result_array() as $row) {
-            $str .= $row['key'];
+            $str .= $row['key'] . $row['can_stream'];
         }
         $hash = md5($str);
     	$this->db->where('id', $site_id)->update('sites', array('queue_hash' => $hash));
