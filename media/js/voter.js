@@ -26,7 +26,6 @@ queue.hash = "a";
 queue.inAjax = false
 
 function get_update() {
-    //update so its a hash check and only update if hash is different
     if (queue.inAjax == false)
     {
         $.getJSON('http://wizuma.com/index.php/voter_json/get_queue/' + queue.hash, function(data) {
@@ -37,7 +36,7 @@ function get_update() {
         }
         results = data.queue;
         for(var row in results) {
-            str += "<div data-role=\"collapsible\" data-theme=\"b\" data-content-theme=\"d\" data-inset=\"false\"><h3>" + results[row].name + "</h3><div class=\"ui-grid-a\"><div class=\"ui-block-a pic\"><img src=\"" + results[row].icon_url + "\"/></div><div class=\"ui-block-b main\"><p>By: " + results[row].artist + "</p><p>From: " + results[row].album + "</p><form><fieldset data-role=\"controlgroup\" data-type=\"horizontal\"><legend>Vote:</legend><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2a\" value=\"1\"><label for=\"radio-choice-h-2a\">Yes</label><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2b\" value=\"0\"><label for=\"radio-choice-h-2b\">No</label></fieldset></form></div></div></div>";
+            str += "<div data-role=\"collapsible\" data-theme=\"b\" data-content-theme=\"d\" data-inset=\"false\"><h3>" + results[row].name + "</h3><div class=\"ui-grid-a\"><div class=\"ui-block-a pic\"><img src=\"" + results[row].icon_url + "\"/></div><div class=\"ui-block-b main\"><p>By: " + results[row].artist + "</p><p>From: " + results[row].album + "</p><form><fieldset data-role=\"controlgroup\" data-type=\"horizontal\"><legend>Vote:</legend><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2a\" value=\"1\"><label for=\"radio-choice-h-2a\" onClick=\"javascript:vote(\'" + results[row].key + "\', \'1\');\">Yes</label><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2b\" value=\"0\"><label for=\"radio-choice-h-2b\" onClick=\"javascript:vote(\'" + results[row].key + "\', \'0\');\">No</label></fieldset></form></div></div></div>";
         }
         document.getElementById("list").innerHTML = str;
         $("#list").trigger('create');
@@ -65,4 +64,9 @@ function request(songKey)
         $('#search').dialog("close");
     });
     $("#lnkHome").click();
+}
+
+function vote(key, dir)
+{
+    console.log(key + " " + dir);
 }
