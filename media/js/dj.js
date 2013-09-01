@@ -15,6 +15,7 @@ controller.canStreamCheck = [];   //stream checking queue
 controller.move = {to:"", key:""};
 controller.messing = false;
 controller.callbackCounter = 0;
+controller.lineFlag = false;
 
 controller.run = function run() {
   //secondary insert function, move to index
@@ -59,9 +60,8 @@ controller.run = function run() {
       i = 0;
       for(var row in controller.rdioQueue) 
       {
-        if (controller.dbQueue[row].key != controller.rdioQueue[row].key)
+        if (controller.checkQueue(row) == true)
         {
-          controller.insertQueue(row);
           break;
         }
         i = row;
@@ -78,9 +78,8 @@ controller.run = function run() {
       i = 0;
       for(var row in controller.dbQueue) 
       {
-        if (controller.dbQueue[row].key != controller.rdioQueue[row].key)
+        if (controller.checkQueue(row) == true)
         {
-          controller.insertQueue(row);
           break;
         }
         i++;
@@ -96,9 +95,8 @@ controller.run = function run() {
     {
       for(var row in controller.dbQueue) 
       {
-        if (controller.dbQueue[row].key != controller.rdioQueue[row].key)
+        if (controller.checkQueue(row) == true)
         {
-          controller.insertQueue(row);
           break;
         }
       }
@@ -137,6 +135,44 @@ controller.run = function run() {
 }
 
 var int=setInterval(function() {controller.run()},1500);
+
+controller.checkQueue = function checkQueue(row)
+{
+  if (row == 0)
+  {
+    if (controller.dbQueue[row].key != controller.rdioQueue[row].key)
+    {
+      if (controller.lineFlag == false)
+      {
+        controller.api.rdio_sendState();
+        controller.callbackWait = true;
+        controller.lineFlag = true;
+      }
+      else
+      {
+        controller.lineFlag = false;
+        controller.insertQueue(row);
+      }
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else 
+  {
+    if (controller.dbQueue[row].key != controller.rdioQueue[row].key)
+    {
+      controller.insertQueue(row);
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+}
 
 controller.insertQueue = function insertQueue(location)
 {
