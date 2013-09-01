@@ -38,6 +38,11 @@ class Voter extends CI_Controller {
 			$this->output->set_header("Location: http://wizuma.com");
 		}
 	}
+
+	public function qr_code($site_id)
+	{
+		echo urldecode($site_id);
+	}
 }
 
 /* End of file welcome.php */
