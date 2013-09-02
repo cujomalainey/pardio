@@ -68,5 +68,7 @@ function request(songKey)
 
 function vote(key, dir)
 {
-    console.log(key + " " + dir);
+    $.getJSON('http://wizuma.com/index.php/voter_json/vote/' + key + "/" + dir, function(data) {
+        console.log(data);
+    });
 }

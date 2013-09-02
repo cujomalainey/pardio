@@ -152,6 +152,7 @@ controller.checkQueue = function checkQueue(row)
       {
         controller.lineFlag = false;
         controller.insertQueue(row);
+        controller.inAjax = false;
       }
       return true;
     }

@@ -92,7 +92,7 @@ class Voter_json extends CI_Controller {
 		if ($this->session->userdata('site_id') != FALSE && $this->rdio->check_key($key) && $this->voter->voter_exist($voter_id))
 		{
 			$this->voter->vote($key, $voter_id, $dir);
-			$this->send(0);
+			$this->send(0, "Vote Cast");
 		}
 		else
 		{

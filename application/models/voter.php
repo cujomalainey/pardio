@@ -103,14 +103,16 @@ class Voter extends CI_Model {
     public function vote($key, $voter_id, $dir)
     {
         $this->db->where('id', $voter_id)->update('voters', array('last_active' => date('Y-m-d H:i:s')));
-        $query = $this->db->select('vote')->where("voter_id", $voter_id)->where("key", $key)->get("votes");
+        $query = $this->db->select('vote, request_id')->join("requests", "votes.request_id = requests.id")->where("votes.voter_id", $voter_id)->where("requests.key", $key)->get("votes");
+        $query2 = $this->db->select('id')->where("site_id", $this->session->userdata('site_id'))->where("key", $key)->get("requests");
+        $row = $query2->row();
         if ($query->num_rows() >= 1)
         {
-            $this->db->where("voter_id", $voter_id)->where("key", $key)->update('votes', array('vote' => $dir));
+            $this->db->where("voter_id", $voter_id)->where("request_id", $row->id)->update('votes', array('vote' => $dir));
         }
         else
         {
-            $this->db->insert('votes', array('voter_id' => $voter_id, 'key' => $key, 'vote' => $dir));
+            $this->db->insert('votes', array('voter_id' => $voter_id, 'request_id' => $row->id, 'vote' => $dir));
         }
     }
 
