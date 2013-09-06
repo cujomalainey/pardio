@@ -61,8 +61,12 @@ class Dj extends CI_Model {
 
     public function calculate_votes($site_id)
     {
-        $start_index = $this->db->select("order")->where("played", "0")->where("site_id", $site_id)->order_by("order", "ASC")->get("requests", 1, 0)->row()->order;
-        $query = $this->db->select("key, vote, added, count(*)")->from("votes")->where("played", 0)->where("site_id", $site_id)->join('requests', 'requests.id = votes.request_id', 'right')->group_by(array('key','vote'))->get()->result_array();
+        $start_index = $this->db->select("order")->where("played", "0")->where('can_stream !=', "0")->or_where('can_stream IS NULL')->where("site_id", $site_id)->order_by("order", "ASC")->get("requests", 1, 0)->row()->order;
+        if (is_null($start_index))
+        {
+            $start_index = 1;
+        }
+        $query = $this->db->select("key, vote, added, count(*)")->from("votes")->where("played", 0)->where('can_stream !=', "0")->or_where('can_stream IS NULL')->where("site_id", $site_id)->join('requests', 'requests.id = votes.request_id', 'right')->group_by(array('key','vote'))->get()->result_array();
         $votes = array();
         $high_vote = array("key" => "", "value" => "");
         foreach ($query as $index) 
@@ -103,9 +107,10 @@ class Dj extends CI_Model {
             array_push($vote_value, sqrt(pow($value['time'], 2) + pow($value['value'] * $coefficient, 2)));
         }
         array_multisort($vote_value, SORT_DESC, $key);
-        var_dump($coefficient);
-        var_dump($votes);
-        var_dump($vote_value);
-        var_dump($key);
+        $data = array();
+        foreach ($key as $ind => $value) {
+            array_push($data, array("key" => $value, "order" => $ind + $start_index));
+        }
+        $this->db->update_batch('requests', $data, 'key');
     }
 }
