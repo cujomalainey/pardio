@@ -35,6 +35,7 @@ class Dj extends CI_Controller {
 	public function auth_complete()
 	{
     	$this->rdio->complete_authentication($this->input->get('oauth_verifier'));
+    	$this->output->set_header("Location: wizuma.com/index.php/dj/test");
 	}
 
   	public function test()

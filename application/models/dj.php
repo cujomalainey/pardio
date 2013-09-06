@@ -58,4 +58,10 @@ class Dj extends CI_Model {
         }
         return $query->result_array();
     }
+
+    public function calculate_votes($site_id)
+    {
+        $start_index = $this->db->select("order")->where("played", "0")->where("site_id")->order_by("order", "ASC")->get("requests", 1, 0)->row()->order;
+        var_dump($this->db->select("key, vote, count(*), order",false)->from("votes")->where("played", 0)->where("site_id", $site_id)->join('requests', 'request.id = votes.site_id')->group_by(array('key','vote'))->get());
+    }
 }
