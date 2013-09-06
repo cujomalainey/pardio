@@ -61,7 +61,52 @@ class Dj extends CI_Model {
 
     public function calculate_votes($site_id)
     {
-        $start_index = $this->db->select("order")->where("played", "0")->where("site_id")->order_by("order", "ASC")->get("requests", 1, 0)->row()->order;
-        var_dump($this->db->select("key, vote, count(*), order",false)->from("votes")->where("played", 0)->where("site_id", $site_id)->join('requests', 'request.id = votes.site_id')->group_by(array('key','vote'))->get());
+        $start_index = $this->db->select("order")->where("played", "0")->where("site_id", $site_id)->order_by("order", "ASC")->get("requests", 1, 0)->row()->order;
+        $query = $this->db->select("key, vote, added, count(*)")->from("votes")->where("played", 0)->where("site_id", $site_id)->join('requests', 'requests.id = votes.request_id', 'right')->group_by(array('key','vote'))->get()->result_array();
+        $votes = array();
+        $high_vote = array("key" => "", "value" => "");
+        foreach ($query as $index) 
+        {
+            if (isset($votes[$index['key']]['value']) == FALSE) 
+            {
+                $votes[$index['key']]['value'] = 0;
+            }
+            if ($index['vote'] == 1)
+            {
+                $votes[$index['key']]['value'] += $index['count(*)'];
+            }
+            elseif (is_null($index['vote']) == FALSE)
+            {
+                $votes[$index['key']]['value'] -= $index['count(*)'];
+            }
+            $votes[$index['key']]['time'] = strtotime(date('c')) - strtotime($index['added']);
+            if ($high_vote['value'] == "" || $high_vote['value'] < $votes[$index['key']]['value'])
+            {
+                $high_vote['key'] = $index['key'];
+                $high_vote['value'] = $votes[$index['key']]['value'];
+                $high_vote['time'] = $votes[$index['key']]['time'];
+            }
+        }
+        if ($high_vote['value'] > 0)
+        {
+            $coefficient = $high_vote['time']/(0.5*$high_vote['value']);
+        }
+        else
+        {
+            $coefficient = 1;
+        }    
+        $key = array();
+        $vote_value = array();
+        $time = array();
+        foreach ($votes as $name => $value) {
+            array_push($key, $name);
+            array_push($vote_value, $value['value']);
+            array_push($time, $value['time']);
+        }
+        array_multisort($vote_value, SORT_DESC, $time, $key);
+        var_dump($votes);
+        var_dump($vote_value);
+        var_dump($key);
+        var_dump($time);
     }
 }

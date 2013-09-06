@@ -83,6 +83,11 @@ class Dj_json extends CI_Controller {
 	{
 		$this->output->set_output(json_encode($data));
 	}
+
+	public function temp()
+	{
+		$this->dj->calculate_votes($this->session->userdata("site_id"));
+	}
 }
 
 /* End of file welcome.php */
