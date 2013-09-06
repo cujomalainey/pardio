@@ -94,19 +94,18 @@ class Dj extends CI_Model {
         else
         {
             $coefficient = 1;
-        }    
+        }   
         $key = array();
         $vote_value = array();
         $time = array();
         foreach ($votes as $name => $value) {
             array_push($key, $name);
-            array_push($vote_value, $value['value']);
-            array_push($time, $value['time']);
+            array_push($vote_value, sqrt(pow($value['time'], 2) + pow($value['value'] * $coefficient, 2)));
         }
-        array_multisort($vote_value, SORT_DESC, $time, $key);
+        array_multisort($vote_value, SORT_DESC, $key);
+        var_dump($coefficient);
         var_dump($votes);
         var_dump($vote_value);
         var_dump($key);
-        var_dump($time);
     }
 }
