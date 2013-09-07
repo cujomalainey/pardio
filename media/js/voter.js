@@ -35,8 +35,29 @@ function get_update() {
             str += "<div data-role=\"collapsible\" data-theme=\"a\" data-content-theme=\"a\" data-inset=\"false\"><h3>Now Playing: " + data.nowPlaying[0].name + "</h3><div class=\"ui-grid-a\"><div class=\"ui-block-a pic\"><img src=\"" + data.nowPlaying[0].icon_url + "\"/></div><div class=\"ui-block-b main\"><p>By: " + data.nowPlaying[0].artist + "</p><p>From: " + data.nowPlaying[0].album + "</p></div></div></div>";
         }
         results = data.queue;
+        votes = data.votes;
         for(var row in results) {
-            str += "<div data-role=\"collapsible\" data-theme=\"b\" data-content-theme=\"d\" data-inset=\"false\"><h3>" + results[row].name + "</h3><div class=\"ui-grid-a\"><div class=\"ui-block-a pic\"><img src=\"" + results[row].icon_url + "\"/></div><div class=\"ui-block-b main\"><p>By: " + results[row].artist + "</p><p>From: " + results[row].album + "</p><form><fieldset data-role=\"controlgroup\" data-type=\"horizontal\"><legend>Vote:</legend><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2a\" value=\"1\"><label for=\"radio-choice-h-2a\" onClick=\"javascript:vote(\'" + results[row].key + "\', \'1\');\">Yes</label><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2b\" value=\"0\"><label for=\"radio-choice-h-2b\" onClick=\"javascript:vote(\'" + results[row].key + "\', \'0\');\">No</label></fieldset></form></div></div></div>";
+            str += "<div data-role=\"collapsible\" data-theme=\"b\" data-content-theme=\"d\" data-inset=\"false\"><h3>" + results[row].name + "</h3><div class=\"ui-grid-a\"><div class=\"ui-block-a pic\"><img src=\"" + results[row].icon_url + "\"/></div><div class=\"ui-block-b main\"><p>By: " + results[row].artist + "</p><p>From: " + results[row].album + "</p><form><fieldset data-role=\"controlgroup\" data-type=\"horizontal\"><legend>Vote:</legend>";
+            added = 0;
+            for(var line in votes)
+            {
+                if (results[row].key == votes[line].key)
+                {
+                    if (votes[line].vote == 1)
+                    {
+                        str += "<input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2a\" value=\"1\" checked=\"checked\"><label for=\"radio-choice-h-2a\" onClick=\"javascript:vote(\'" + results[row].key + "\', \'1\');\">Yes</label><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2b\" value=\"0\"><label for=\"radio-choice-h-2b\" onClick=\"javascript:vote(\'" + results[row].key + "\', \'0\');\">No</label></fieldset></form></div></div></div>";
+                    }
+                    else
+                    {
+                        str += "<input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2a\" value=\"1\"><label for=\"radio-choice-h-2a\" onClick=\"javascript:vote(\'" + results[row].key + "\', \'1\');\">Yes</label><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2b\" value=\"0\" checked=\"checked\"><label for=\"radio-choice-h-2b\" onClick=\"javascript:vote(\'" + results[row].key + "\', \'0\');\">No</label></fieldset></form></div></div></div>";
+                    }
+                    added = 1;
+                }
+            }
+            if (added == 0)
+            {
+                str += "<input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2a\" value=\"1\"><label for=\"radio-choice-h-2a\" onClick=\"javascript:vote(\'" + results[row].key + "\', \'1\');\">Yes</label><input type=\"radio\" name=\"radio-choice-h-2\" id=\"radio-choice-h-2b\" value=\"0\"><label for=\"radio-choice-h-2b\" onClick=\"javascript:vote(\'" + results[row].key + "\', \'0\');\">No</label></fieldset></form></div></div></div>";
+            }
         }
         document.getElementById("list").innerHTML = str;
         $("#list").trigger('create');
