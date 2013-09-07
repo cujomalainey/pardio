@@ -111,7 +111,7 @@ class Voter_json extends CI_Controller {
 			sleep(2);
 			if ($this->common->queue_changed($site_id, $hash))
 			{
-				$this->send(array('total' => $this->voter->active_members($site_id), 'name' => $this->voter->get_name_by_id($site_id), 'queue' => $this->voter->get_queue($site_id), 'hash' => $this->common->get_queue_hash($site_id), 'nowPlaying' => $this->voter->now_playing($site_id)));
+				$this->send(array('total' => $this->voter->active_members($site_id), 'name' => $this->voter->get_name_by_id($site_id), 'queue' => $this->voter->get_queue($site_id), 'hash' => $this->common->get_queue_hash($site_id), 'nowPlaying' => $this->voter->now_playing($site_id), 'votes' => $this->voter->get_votes($this->session->userdata('voter_id'))));
 				break;
 			}
 			$i++;

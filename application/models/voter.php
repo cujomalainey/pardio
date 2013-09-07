@@ -141,4 +141,9 @@ class Voter extends CI_Model {
         }
         return $query->result_array();
     }
+
+    public function get_votes($voter_id)
+    {
+        return $this->db->select('vote, key')->from('votes')->join('requests', 'votes.request_id = requests.id')->where("votes.voter_id", $voter_id)->get()->result_array();
+    }
 }
