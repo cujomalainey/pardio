@@ -57,7 +57,7 @@
         <p><a href="http://wizuma.com/index.php/voter_json/exit_site" data-rel="external" data-ajax="false" data-role="button" data-inline="true" data-icon="back" data-corners="true" data-shadow="true" data-theme="b">Exit</a></p>   
     </div>
 </div>
-<div data-role="dialog" data-rel="dialog" data-transition="slideup" data-url="search" id="search">
+<div data-role="dialog" data-rel="dialog" data-transition="slideup" data-url="search" class="search">
     <div data-role="header" data-theme="e" role="banner">
         <h1 class="ui-title" role="heading" aria-level="1">Search Results</h1>
     </div>

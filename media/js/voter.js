@@ -82,7 +82,7 @@ function request(songKey)
             alert(data[1]);
         }
         $.mobile.loading( 'hide' );
-        $('#search').dialog("close");
+        $('.search').dialog("close");
     });
     $("#lnkHome").click();
 }

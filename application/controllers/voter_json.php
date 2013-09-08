@@ -66,7 +66,7 @@ class Voter_json extends CI_Controller {
 				if ($this->voter->already_requested($key, $site_id))
 				{
 					$this->common->request($key, $voter_id, $site_id);
-					$this->send(0); //Everything went ok
+					$this->send("0"); //Everything went ok
 				}	
 				else
 				{
