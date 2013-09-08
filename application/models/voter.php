@@ -22,6 +22,21 @@ class Voter extends CI_Model {
     	}
     }
 
+    public function check_key($code)
+    {
+        //checks to see if code exists
+        $query = $this->db->get_where('sites', array('id' => $code));
+        if ($query->num_rows() >= 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
     public function get_id_by_tag($tag)
     {
         $query = $this->db->select('id')->get_where('sites', array('tag' => $tag));

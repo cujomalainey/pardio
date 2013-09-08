@@ -125,6 +125,31 @@ class Voter_json extends CI_Controller {
 		$this->output->set_header("Location: http://wizuma.com");
 	}
 
+	public function qr_code($site_id)
+	{
+		$this->load->model('voter');
+		if ($this->voter->check_key($site_id))
+		{
+			$voter_id = $this->session->userdata('voter_id');
+			if ($voter_id != FALSE && $this->voter->voter_exist($voter_id)) //if user has preset id and check if id is still valid
+			{
+				//if still valid then update info
+				$this->session->set_userdata(array('site_id' => $site_id));
+				$this->voter->update_site($site_id, $voter_id);
+			}
+			else
+			{
+				//issue new credentials
+				$this->session->set_userdata(array('site_id' => $site_id, 'voter_id' => $this->voter->add_voter($site_id)));
+			}
+			$this->output->set_header("Location: http://wizuma.com/index.php/voter/party");
+		}
+		else
+		{
+			$this->output->set_header("Location: http://wizuma.com/");
+		}
+	}
+
 	private function send($data)
 	{
 		$this->output->set_output(json_encode($data));
