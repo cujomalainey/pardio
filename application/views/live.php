@@ -29,14 +29,20 @@
 <title>DJ</title>
 <style type="text/css">
 
+/*
+1924B1 BLUE
+6C0AAB PURPLE
+00A08A CYAN
+081073 DARK BLUE
+*/
+
 body {
 	margin: 0px;
 	background-color: #081073;
 }
 
 #header {
-	height: 10%;
-	background-color: #45036f;
+	background-color: #6C0AAB;
 }
 
 .menu {
@@ -78,7 +84,20 @@ body {
 <?php
 }
 ?>
-<div class="row container"><div id="header" class="span12"><span id="track"></span><div id="progress" class="eigth"></div></div></div>
+<div class="row container">
+	<div class="span2" style="background-color: #00A08A" id="track"></div>
+	<div id="header" class="span8" style="background-color: #6C0AAB">
+		<div id="progress">
+		</div>
+	</div>
+	<div class="span2" style="background-color: #00A08A">
+		<ul class="nav nav-tabs nav-stacked">
+			<li><a href="">Sign Out</a></li>
+			<li><a href="http://qrickit.com/api/qr?d=http://wizuma.com/index.php/voter_json/qr_code/1&addtext=Vote%20For%20Music&txtcolor=000000&fgdcolor=000000
+&bgdcolor=ffffff&qrsize=450&t=p&e=m" target="_blank">Get QR Code</a></li>
+		</ul>
+	</div>
+</div>
 <div class="row container">
 	<div class="span2 menu">
 	<ul class="nav nav-tabs nav-stacked">
@@ -87,9 +106,9 @@ body {
 		<li><a id="next">Next</a></li>
 	</ul>
 	</div>
-	<div id="songQueue" class="main span8">
+	<div id="songQueue" class="main span8" >
 	</div>
-	<div id="log" class="span2">
+	<div id="log" class="span2" style="background-color: #6C0AAB">
 	Fusce sit amet felis nisi. Donec erat eros, 
 </div>
 </div>
