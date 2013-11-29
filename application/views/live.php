@@ -38,27 +38,10 @@
 
 body {
 	margin: 0px;
-	background-color: #081073;
-}
-
-#header {
-	background-color: #6C0AAB;
-}
-
-.menu {
-	background-color: #6c0aab;
-}
-
-#log {
-	background-color: #0ff;
 }
 
 .row {
 	width: 960px;
-}
-
-.main {
-	background-color: #00a08a;
 }
 
 .column { padding-bottom: 10px;} /*float: left;*/
@@ -85,12 +68,12 @@ body {
 }
 ?>
 <div class="row container">
-	<div class="span2" style="background-color: #00A08A" id="track"></div>
-	<div id="header" class="span8" style="background-color: #6C0AAB">
+	<div class="span2" id="track"></div>
+	<div id="header" class="span8">
 		<div id="progress">
 		</div>
 	</div>
-	<div class="span2" style="background-color: #00A08A">
+	<div class="span2">
 		<ul class="nav nav-tabs nav-stacked">
 			<li><a href="">Sign Out</a></li>
 			<li><a href="http://qrickit.com/api/qr?d=http://wizuma.com/index.php/voter_json/qr_code/1&addtext=Vote%20For%20Music&txtcolor=000000&fgdcolor=000000
@@ -108,7 +91,7 @@ body {
 	</div>
 	<div id="songQueue" class="main span8" >
 	</div>
-	<div id="log" class="span2" style="background-color: #6C0AAB">
+	<div id="log" class="span2">
 	Fusce sit amet felis nisi. Donec erat eros, 
 </div>
 </div>
