@@ -13,6 +13,7 @@ class Dj extends CI_Controller {
     	parent::__construct();
     	$this->load->library('session');
     	$this->load->model('rdio');
+    	$this->load->helper('url');
   	}
 
 	public function index()
@@ -23,35 +24,35 @@ class Dj extends CI_Controller {
 		}
 		else
 		{
-			$this->output->set_header("Location: http://wizuma.com/");
+			$this->output->set_header("Location: " . site_url());
 		}
 	}
 
 	public function connect_rdio()
 	{
-		$this->output->set_header("Location: " . $this->rdio->begin_authentication("http://wizuma.com/index.php/dj/auth_complete"));
+		$this->output->set_header("Location: " . $this->rdio->begin_authentication(site_url() . "/index.php/dj/auth_complete"));
 	}
 
 	public function auth_complete()
 	{
     	$this->rdio->complete_authentication($this->input->get('oauth_verifier'));
-    	$this->output->set_header("Location: http://wizuma.com/index.php/dj/test");
+    	$this->output->set_header("Location: " . site_url() . "/index.php/dj/test");
 	}
 
   	public function test()
   	{
-    	$result = $this->rdio->call('getPlaybackToken', array('domain' => 'wizuma.com'));
+    	$result = $this->rdio->call('getPlaybackToken', array('domain' => site_url()));
     	$data = array('playback' => TRUE, 'token' => $result->result);
     	$this->load->view('test', $data);
   	}
 
   	public function live()
   	{
-    	$result = $this->rdio->call('getPlaybackToken', array('domain' => 'wizuma.com'));
+    	$result = $this->rdio->call('getPlaybackToken', array('domain' => site_url()));
     	$data = array('playback' => TRUE, 'token' => $result->result);
     	$this->load->view('live', $data);
   	}
 }
 
 /* End of file dj.php */
-/* Location: ./application/controllers/dj.php */
+/* Location: /application/controllers/dj.php */

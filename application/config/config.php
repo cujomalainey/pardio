@@ -5,6 +5,8 @@
 | Base Site URL
 |--------------------------------------------------------------------------
 |
+| **MUST BE SET FOR RDIO**
+| 
 | URL to your CodeIgniter root. Typically this will be your base URL,
 | WITH a trailing slash:
 |
@@ -14,7 +16,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= '';
+$config['base_url']	= 'http://wizuma.com';
 
 /*
 |--------------------------------------------------------------------------
