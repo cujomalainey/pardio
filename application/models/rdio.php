@@ -196,3 +196,6 @@ function om($consumer, $url, $params, $token=NULL, $method='POST', $realm=NULL, 
 
   return 'OAuth ' . implode(', ', $authorization_params);
 }
+
+/* End of file rdio.php */
+/* Location: /application/models/rdio.php */

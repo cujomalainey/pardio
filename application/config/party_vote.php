@@ -22,11 +22,11 @@ $config['rdio_secret']	= 'hAxpqwbWbq';
 | Other useful settings
 | 
 |	allow_registration: allows new music dj's to register for site use
-|	allow_qr_code_login: if enabled allows deivces to login via QR codes
+|	max_sites: maximum number of sites active at anytime by a user
 |
 */
 $config['allow_registration'] 	= true;
-$config['allow_qr_code_login']	= true;
+$config['max_sites']			= 1
 
 /*
 |--------------------------------------------------------------------------
