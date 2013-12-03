@@ -21,12 +21,14 @@ $config['rdio_secret']	= 'hAxpqwbWbq';
 |
 | Other useful settings
 | 
+|	domain: your domain name WITHOUT http://
 |	allow_registration: allows new music dj's to register for site use
 |	max_sites: maximum number of sites active at anytime by a user
 |
 */
+$config['domain']			 	= 'wizuma.com';
 $config['allow_registration'] 	= true;
-$config['max_sites']			= 1
+$config['max_sites']			= 1;
 
 /*
 |--------------------------------------------------------------------------

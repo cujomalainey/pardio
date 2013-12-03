@@ -29,13 +29,6 @@
 <title>DJ</title>
 <style type="text/css">
 
-/*
-1924B1 BLUE
-6C0AAB PURPLE
-00A08A CYAN
-081073 DARK BLUE
-*/
-
 body {
 	margin: 0px;
 }
