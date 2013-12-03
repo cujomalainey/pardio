@@ -36,15 +36,8 @@ class Dj extends CI_Controller {
 	public function auth_complete()
 	{
     	$this->rdio->complete_authentication($this->input->get('oauth_verifier'));
-    	$this->output->set_header("Location: " . site_url() . "/index.php/dj/test");
+    	$this->output->set_header("Location: " . site_url() . "/index.php/dj");
 	}
-
-  	public function test()
-  	{
-    	$result = $this->rdio->call('getPlaybackToken', array('domain' => site_url()));
-    	$data = array('playback' => TRUE, 'token' => $result->result);
-    	$this->load->view('test', $data);
-  	}
 
   	public function live()
   	{

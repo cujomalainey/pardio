@@ -11,8 +11,8 @@
 |	http://developer.rdio.com/
 |
 */
-$config['rdio_token']	= 'eaflme';
-$config['rdio_secret']	= '';
+$config['rdio_token']	= 'd3ddstqmc77epb9q93m7j59c';
+$config['rdio_secret']	= 'hAxpqwbWbq';
 
 /*
 |--------------------------------------------------------------------------

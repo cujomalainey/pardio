@@ -8,7 +8,8 @@ class Rdio extends CI_Model {
   function __construct()
   {
     parent::__construct();
-    $this->consumer = array('d3ddstqmc77epb9q93m7j59c', 'hAxpqwbWbq');
+    $this->config->load("party_vote")
+    $this->consumer = array($this->config->item('rdio_token'), $this->config->item('rdio_secret'));
     $this->token = $this->session->userdata('token');
   }
 

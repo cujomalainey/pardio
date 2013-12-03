@@ -15,7 +15,7 @@ class Css extends CI_Controller {
         $this->output->set_header("content-type: text/css");
     }
 
-	public function party()
+	public function jsmobile_voter()
 	{
 		if ($this->session->userdata('site_id') != false)
 		{
@@ -23,10 +23,10 @@ class Css extends CI_Controller {
 		}
 		else
 		{
-			$this->output->set_header("Location: http://wizuma.com");
+			$this->output->set_header("Location: " . site_url());
 		}
 	}
 }
 
-/* End of file welcome.php */
-/* Location: ./application/controllers/welcome.php */
+/* End of file css.php */
+/* Location: ./application/controllers/css.php */

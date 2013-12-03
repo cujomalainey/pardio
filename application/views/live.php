@@ -76,8 +76,7 @@ body {
 	<div class="span2">
 		<ul class="nav nav-tabs nav-stacked">
 			<li><a href="">Sign Out</a></li>
-			<li><a href="http://qrickit.com/api/qr?d=http://wizuma.com/index.php/voter_json/qr_code/1&addtext=Vote%20For%20Music&txtcolor=000000&fgdcolor=000000
-&bgdcolor=ffffff&qrsize=450&t=p&e=m" target="_blank">Get QR Code</a></li>
+			<li><a href="http://qrickit.com/api/qr?d=http://wizuma.com/index.php/voter_json/qr_code/1&addtext=Vote%20For%20Music&txtcolor=000000&fgdcolor=000000&bgdcolor=ffffff&qrsize=450&t=p&e=m" target="_blank">Get QR Code</a></li>
 		</ul>
 	</div>
 </div>
