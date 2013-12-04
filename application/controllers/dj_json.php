@@ -86,7 +86,7 @@ class Dj_json extends CI_Controller {
 
 	public function temp()
 	{
-		$this->dj->calculate_votes($this->session->userdata("site_id"));
+		print $this->dj->calculate_votes($this->session->userdata("site_id"));
 	}
 }
 
