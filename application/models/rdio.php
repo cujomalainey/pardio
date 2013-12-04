@@ -2,9 +2,17 @@
 
 class Rdio extends CI_Model {
 
+  /*
+  * Rdio Model
+  * 
+  * Handles all Rdio API
+  * requests
+  *
+  */
+
   private $consumer;
   private $token;
-    
+
   function __construct()
   {
     parent::__construct();
@@ -13,6 +21,7 @@ class Rdio extends CI_Model {
     $this->token = $this->session->userdata('token');
   }
 
+  //return song information by key
   public function get_song_by_key($keys)
   {
     if (is_array($keys))
@@ -30,11 +39,13 @@ class Rdio extends CI_Model {
     return $this->call('get', array('keys' => $string));
   }
 
+  //search for tracks by keywords
   public function search($query)
   {
     return $this->call('search', array('types' => 'track', 'query' => $query));
   }
 
+  //check if key is valid
   public function check_key($key)
   {
     $query = $this->call('get', array('keys' => $key));

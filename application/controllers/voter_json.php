@@ -17,6 +17,7 @@ class Voter_json extends CI_Controller {
         $this->load->library('session');
     }
 
+    //check if user if site tag is valid and whether or not the their credentials are still valid
 	public function check_code($code)
 	{
 
