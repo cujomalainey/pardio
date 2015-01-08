@@ -16,7 +16,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://wizuma.com';
+$config['base_url']	= 'http://pardio.malainey.com/';
 
 /*
 |--------------------------------------------------------------------------
